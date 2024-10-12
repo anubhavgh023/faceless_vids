@@ -1,0 +1,7 @@
+.env
+venv/
+
+assets/
+
+__pycache__
+transforms.trf
