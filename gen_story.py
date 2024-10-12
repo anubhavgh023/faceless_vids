@@ -33,7 +33,6 @@ def generate_story(prompt: str, duration: int):
 
         # Extract the content
         story = completion.choices[0].message.content
-        print(story)  # This helps to debug the content
 
         # Split the story into sentences
         sentences = story.split(". ")
@@ -52,5 +51,5 @@ def generate_story(prompt: str, duration: int):
 
 if __name__ == "__main__":
     prompt = "I was walking down the amazon jungle."
-    duration = 30
+    duration = 60
     generate_story(prompt=prompt, duration=duration)
