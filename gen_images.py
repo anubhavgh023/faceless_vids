@@ -12,13 +12,10 @@ client.api_key = os.getenv("OPENAI_API_KEY")
 style = "anime"
 
 # List of story prompts with detailed descriptions
-prompts = [
-    "A knight in shiny silver armor rides a black horse, entering a misty, dense forest with glowing lanterns",
-    "The knight encounters a mysterious figure with a glowing staff in the dark forest, trees looming around",
-    "The knight battles a fearsome red dragon on the edge of a rocky cliff, flames and sparks filling the air,",
-    "The knight rests by a fire, his armor reflecting the flames, the battle-worn sword lying nearby",
-    "The knight returns to a grand castle at dawn, the sun rising behind tall towers"
-]
+prompts = []
+with open("prompts/prompts.txt", "r") as f:
+    prompts = f.read().splitlines()
+    
 
 for i, prompt in enumerate(prompts, start=1):
     response = client.images.generate(

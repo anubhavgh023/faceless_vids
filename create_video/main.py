@@ -20,7 +20,7 @@ if __name__ == "__main__":
     audios = [f"assets/audio/prompt_{i}.mp3" for i in range(1, 6)]
     captions = []
     # Read prompts again to use as captions
-    with open("prompts/prompts.txt", "r") as f:
+    with open("../prompts/prompts.txt", "r") as f:
         captions = f.read().splitlines()
 
     processed_videos = []
