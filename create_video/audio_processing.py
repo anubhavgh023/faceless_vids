@@ -29,7 +29,7 @@ def generate_word_timings(captions):
         words = caption.split()
         for word in words:
             start_time = current_time
-            end_time = current_time + 1.0  # Assume each word takes 1 second
+            end_time = current_time + 0.4  # Assume each word takes 0.4 second
             words_with_timings.append((word, start_time, end_time))
-            current_time += 1.0
+            current_time += 0.4
     return words_with_timings
