@@ -26,7 +26,7 @@ def generate_story(prompt: str, duration: int):
                 {"role": "system", "content": "You are a story teller."},
                 {
                     "role": "user",
-                    "content": f"Write {num_of_sentences} sentences based on this prompt: '{prompt}' make a story out of it. Each sentence should be concise, no more than 20 words long.",
+                    "content": f"Write exactly {num_of_sentences} sentences based on this prompt: '{prompt}' make a story out of it. Each sentence should be around 40 words long.",
                 },
             ],
         )
