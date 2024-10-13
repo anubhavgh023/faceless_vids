@@ -6,5 +6,5 @@ assets/
 __pycache__
 transforms.trf
 
-prompts/
+prompts/prompts.txt
 *.txt
