@@ -14,7 +14,7 @@ def merge_videos(input_videos, output_video):
             shell=True,
             check=True,
         )
-        os.remove("videos_list.txt")
+        # os.remove("videos_list.txt")
         print(f"Merged video saved as '{output_video}'")
     except Exception as e:
         print(f"Error merging videos: {e}")
@@ -57,7 +57,7 @@ def add_subtitles_with_audio(input_video, subtitle_file, audio_file, output_vide
 def add_bg_music(final_video, bg_music_path, output_video):
     ffmpeg_command = (
         f"ffmpeg -i {final_video} -i {bg_music_path} "
-        f'-filter_complex "[1:a]volume=0.08[a1];[0:a][a1]amix=inputs=2:duration=shortest" '
+        f'-filter_complex "[1:a]volume=0.8[a1];[0:a][a1]amix=inputs=2:duration=shortest" '
         f"-c:v copy -c:a aac -b:a 192k {output_video}"
     )
     try:
