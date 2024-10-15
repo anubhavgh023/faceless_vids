@@ -14,7 +14,7 @@ def merge_videos(input_videos, output_video):
             shell=True,
             check=True,
         )
-        # os.remove("videos_list.txt")
+        os.remove("videos_list.txt")
         print(f"Merged video saved as '{output_video}'")
     except Exception as e:
         print(f"Error merging videos: {e}")

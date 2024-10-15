@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # Step 1: Generate videos for each image (without audio)
     for i in range(segments):
         output_video = f"assets/videos/story_video_{i + 1}.mp4"
-        aspect_ratio = "1024:1729"  # modify aspect ratio
+        aspect_ratio = "1024:1728"  # modify aspect ratio
         make_video_from_image(images[i], output_video, aspect_ratio)
         processed_videos.append(output_video)
 
