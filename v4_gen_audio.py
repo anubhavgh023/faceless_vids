@@ -12,24 +12,39 @@ load_dotenv()
 client = OpenAI()
 client.api_key = os.getenv("OPENAI_API_KEY")
 
-def generate_audio_for_prompt(character, prompt, index, audio_dir):
-    """Generates audio for a single prompt."""
-    try:
-        # Call the API to generate the audio
-        audio_response = client.audio.speech.create(
-            model="tts-1",
-            voice=character,
-            input=prompt
-        )
-        
-        # Save the audio file
-        audio_file = f"{audio_dir}prompt_{index}.mp3"
-        with open(audio_file, "wb") as f:
-            f.write(audio_response.content)  # Save audio binary data to file
+# Max retry attempts
+MAX_RETRIES = 3
+TIMEOUT_SECONDS = 3
 
-        print(f"Audio for prompt {index} saved as 'prompt_{index}.mp3'")
-    except Exception as e:
-        print(f"Error generating audio for prompt {index}: {e}")
+def generate_audio_for_prompt(character, prompt, index, audio_dir):
+    """Generates audio for a single prompt with retries and timeouts."""
+    retries = 0
+    while retries < MAX_RETRIES:
+        try:
+            # Call the API to generate the audio with a timeout
+            audio_response = client.audio.speech.create(
+                model="tts-1",
+                voice=character,
+                input=prompt,
+                timeout=TIMEOUT_SECONDS  # Set timeout for API call
+            )
+            
+            # Save the audio file
+            audio_file = f"{audio_dir}prompt_{index}.mp3"
+            with open(audio_file, "wb") as f:
+                f.write(audio_response.content)  # Save audio binary data to file
+
+            print(f"Audio for prompt {index} saved as 'prompt_{index}.mp3'")
+            return  # Exit if successful
+
+        except Exception as e:
+            retries += 1
+            print(f"Error generating audio for prompt {index}: {e}. Retrying ({retries}/{MAX_RETRIES})...")
+
+            # Optional: Wait a bit before retrying
+            time.sleep(2)
+    
+    print(f"Failed to generate audio for prompt {index} after {MAX_RETRIES} attempts.")
 
 def generate_audio(character: str):
     """Generates audio for all prompts using a thread pool."""
