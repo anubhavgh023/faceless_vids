@@ -1,5 +1,3 @@
-# using threadpool
-
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from openai import OpenAI
@@ -49,10 +47,10 @@ def generate_audio_for_prompt(character, prompt, index, audio_dir):
 def generate_audio(character: str):
     """Generates audio for all prompts using a thread pool."""
     # Load text prompts for the voiceover
-    with open("prompts/prompts.txt", "r") as f:
+    with open("prompts/subtitle_gen_prompts.txt", "r") as f:
         prompts = f.read().splitlines()
 
-    audio_dir = "create_video/assets/audio/"
+    audio_dir = "video_creation/assets/audio/"
     os.makedirs(audio_dir, exist_ok=True)
 
     # Use ThreadPoolExecutor to run tasks concurrently
@@ -63,7 +61,3 @@ def generate_audio(character: str):
         # Wait for all tasks to complete
         for future in as_completed(futures):
             future.result()
-
-if __name__ == "__main__":
-    character = "onyx"
-    generate_audio(character)
