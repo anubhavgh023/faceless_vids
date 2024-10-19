@@ -39,6 +39,7 @@ async def generate_image_request(session, prompt, style, i):
         "watercolor": ", soft watercolor portrait, delicate brushstrokes, flowing colors, dreamy textures, and an artistic yet whimsical feel. Enhance with 'watercolor'",
         "cinematic": ", epic cinematic portrait, dynamic composition, dramatic lighting, and a film-like atmosphere with highly detailed realism. Enhance with 'cinematic'",
         "sketch": ", hand-drawn black and white pencil sketch portrait, featuring soft, loose lines and shading, on textured white paper. Emphasizes expressive features and a minimalist design, capturing the essence with an artistic touch. Enhance with 'pencil-sketch-drawing'",
+        "ink":"Intricate ink portrait, featuring bold, precise lines, and sharp contrast between light and shadow. The artwork has a strictly monochromatic aesthetic, with detailed cross-hatching and stippling to create depth and texture. The style emphasizes expressive features with a clean, minimalist approach. Enhance with 'ink-illustration'."
     }
 
     enhance_style_opts = {
@@ -53,6 +54,7 @@ async def generate_image_request(session, prompt, style, i):
         "watercolor": "watercolor",
         "cinematic": "cinematic",
         "sketch": "pencil-sketch-drawing",  # Sketch enhancement option
+        "ink":"japanese-ink-drawing"
     }
 
 

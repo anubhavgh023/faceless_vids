@@ -29,14 +29,14 @@ def generate_story_and_assets(prompt: str, duration: int, character: str,style:s
 
 
 def main():
-    prompt = "Historic story of ww2"
+    prompt = "Horror Story, dark fantasy"
     duration = 45  # Duration in seconds for the story
     character = "nova"  # Character for the audio generation
-    style = "cyberpunk"
+    style = "ink"
 
     # Start generating the story and assets
     print("Starting to generate story and assets...")
-    generate_story_and_assets(prompt, duration, character,style)
+    # generate_story_and_assets(prompt, duration, character,style)
     print("Story and assets generation completed!")
 
     # Create the video after generating assets
