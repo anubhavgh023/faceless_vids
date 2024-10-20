@@ -79,7 +79,7 @@ def image_generator_story(prompt: str, duration: int):
                     "role": "user",
                     "content": f"""Create a visually rich story of exactly {num_of_sentences} sentences based on the prompt: '{prompt}'.
 
-                        Each sentence should be around 50 words, focusing on vivid visual elements (colors, textures, light), sensory details (sounds, smells, touch), motion, and atmosphere. Alternate between wide, sweeping views and close-up details to create a cinematic, immersive narrative that inspires visual storytelling.Just write the sentences.
+                        Each sentence should be around 50 words, focusing on vivid visual elements (colors, textures, light), sensory details (sounds, smells, touch), motion, and atmosphere. Alternate between wide, sweeping views and close-up details to create a cinematic, immersive narrative that inspires visual storytelling.
 
                         Ensure each sentence serves as a clear, captivating visual scene, perfect for illustrations or film compositions.""",
                 },

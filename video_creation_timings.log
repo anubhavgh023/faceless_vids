@@ -1,0 +1,228 @@
+
+2024-10-20 22:26:00 - Video creation started
+2024-10-20 22:26:00 - Main script started
+2024-10-20 22:26:00 - Starting video creation...
+2024-10-20 22:26:01 - process_audio: 0.51 seconds
+2024-10-20 22:26:09 - process_image_to_video (Image 4): 8.78 seconds
+2024-10-20 22:26:10 - process_image_to_video (Image 3): 9.91 seconds
+2024-10-20 22:26:11 - process_image_to_video (Image 5): 10.69 seconds
+2024-10-20 22:26:11 - process_image_to_video (Image 7): 10.90 seconds
+2024-10-20 22:26:11 - process_image_to_video (Image 10): 10.97 seconds
+2024-10-20 22:26:12 - process_image_to_video (Image 8): 11.75 seconds
+2024-10-20 22:26:12 - process_image_to_video (Image 1): 11.77 seconds
+2024-10-20 22:26:12 - process_image_to_video (Image 9): 11.78 seconds
+2024-10-20 22:26:12 - process_image_to_video (Image 6): 11.87 seconds
+2024-10-20 22:26:12 - process_image_to_video (Image 2): 11.91 seconds
+2024-10-20 22:26:17 - HTTP Request: POST https://api.openai.com/v1/audio/transcriptions "HTTP/1.1 200 OK"
+2024-10-20 22:26:17 - generate_subtitles_from_audio (Whisper): 4.55 seconds
+2024-10-20 22:26:17 - Parallel tasks (videos, audio, transcription): 16.51 seconds
+2024-10-20 22:26:40 - merge_videos: 23.14 seconds
+2024-10-20 22:27:08 - add_particle_effect: 28.23 seconds
+2024-10-20 22:27:08 - generate_subtitle_file: 0.00 seconds
+2024-10-20 22:27:08 - An error occurred: name 'ass_file' is not defined
+2024-10-20 22:27:08 - Traceback:
+Traceback (most recent call last):
+  File "/home/anubhav/Development/videoAI/faceless_vids/main.py", line 78, in main
+    create_video(output_video_duration=duration)  # Assuming create_video() handles the full video creation process
+  File "/home/anubhav/Development/videoAI/faceless_vids/video_creation/create_video.py", line 174, in create_video
+    modify_subtitle_style(subtitle_file, modified_subtitle_file)
+  File "/home/anubhav/Development/videoAI/faceless_vids/video_creation/subtitle_processing.py", line 111, in modify_subtitle_style
+    subs.save(ass_file)
+NameError: name 'ass_file' is not defined. Did you mean: 'srt_file'?
+2024-10-20 22:34:45 - Video creation started
+2024-10-20 22:34:45 - Main script started
+2024-10-20 22:34:45 - Starting video creation...
+2024-10-20 22:34:46 - process_audio: 0.67 seconds
+2024-10-20 22:34:54 - process_image_to_video (Image 5): 8.15 seconds
+2024-10-20 22:34:54 - process_image_to_video (Image 9): 8.82 seconds
+2024-10-20 22:34:55 - process_image_to_video (Image 4): 9.95 seconds
+2024-10-20 22:34:56 - process_image_to_video (Image 10): 10.46 seconds
+2024-10-20 22:34:56 - process_image_to_video (Image 3): 10.51 seconds
+2024-10-20 22:34:57 - process_image_to_video (Image 1): 11.14 seconds
+2024-10-20 22:34:57 - process_image_to_video (Image 7): 11.37 seconds
+2024-10-20 22:34:57 - process_image_to_video (Image 8): 11.63 seconds
+2024-10-20 22:34:57 - process_image_to_video (Image 6): 11.64 seconds
+2024-10-20 22:34:57 - process_image_to_video (Image 2): 11.65 seconds
+2024-10-20 22:35:03 - HTTP Request: POST https://api.openai.com/v1/audio/transcriptions "HTTP/1.1 200 OK"
+2024-10-20 22:35:03 - generate_subtitles_from_audio (Whisper): 6.06 seconds
+2024-10-20 22:35:03 - Parallel tasks (videos, audio, transcription): 17.76 seconds
+2024-10-20 22:35:27 - merge_videos: 23.96 seconds
+2024-10-20 22:35:54 - add_particle_effect: 26.43 seconds
+2024-10-20 22:35:54 - generate_subtitle_file: 0.00 seconds
+2024-10-20 22:35:54 - modify_subtitle_style: 0.01 seconds
+2024-10-20 22:36:01 - add_subtitles_with_audio: 7.33 seconds
+2024-10-20 22:36:02 - add_bg_music: 1.02 seconds
+2024-10-20 22:36:02 - Video creation: 76.52 seconds
+2024-10-20 22:36:02 - Total execution time: 76.52 seconds
+2024-10-20 23:03:51 - Video creation started
+2024-10-20 23:03:51 - Main script started
+2024-10-20 23:03:51 - Starting to generate story and assets...
+2024-10-20 23:03:51 - Generating story prompts for subtitles and images...
+2024-10-20 23:03:52 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-20 23:03:59 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-20 23:03:59 - Story prompts generated in 8.08 seconds.
+2024-10-20 23:03:59 - Generating audio for character...
+2024-10-20 23:04:00 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:00 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:00 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:00 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:00 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:02 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:02 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:02 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:02 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:03 - Retrying request to /audio/speech in 0.493991 seconds
+2024-10-20 23:04:05 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:04:06 - Audio generated: 6.84 seconds
+2024-10-20 23:04:06 - Reading image prompts...
+2024-10-20 23:04:06 - Image prompts read: 0.00 seconds
+2024-10-20 23:04:06 - Generating images from prompts...
+2024-10-20 23:04:27 - Images generated: 21.41 seconds
+2024-10-20 23:04:27 - Total story and assets generation time: 36.33 seconds
+2024-10-20 23:04:27 - Story and assets generation completed!
+2024-10-20 23:04:27 - Starting video creation...
+2024-10-20 23:04:28 - process_audio: 0.39 seconds
+2024-10-20 23:04:36 - process_image_to_video (Image 9): 9.17 seconds
+2024-10-20 23:04:38 - process_image_to_video (Image 2): 10.39 seconds
+2024-10-20 23:04:38 - process_image_to_video (Image 7): 10.51 seconds
+2024-10-20 23:04:38 - process_image_to_video (Image 5): 10.74 seconds
+2024-10-20 23:04:38 - process_image_to_video (Image 8): 10.81 seconds
+2024-10-20 23:04:38 - process_image_to_video (Image 6): 10.89 seconds
+2024-10-20 23:04:38 - process_image_to_video (Image 1): 11.04 seconds
+2024-10-20 23:04:38 - process_image_to_video (Image 10): 11.36 seconds
+2024-10-20 23:04:39 - process_image_to_video (Image 3): 11.81 seconds
+2024-10-20 23:04:39 - process_image_to_video (Image 4): 11.83 seconds
+2024-10-20 23:04:44 - HTTP Request: POST https://api.openai.com/v1/audio/transcriptions "HTTP/1.1 200 OK"
+2024-10-20 23:04:44 - generate_subtitles_from_audio (Whisper): 5.28 seconds
+2024-10-20 23:04:44 - Parallel tasks (videos, audio, transcription): 17.19 seconds
+2024-10-20 23:05:08 - merge_videos: 24.16 seconds
+2024-10-20 23:05:36 - add_particle_effect: 27.35 seconds
+2024-10-20 23:05:36 - generate_subtitle_file: 0.00 seconds
+2024-10-20 23:05:36 - modify_subtitle_style: 0.01 seconds
+2024-10-20 23:05:43 - add_subtitles_with_audio: 6.95 seconds
+2024-10-20 23:05:44 - add_bg_music: 0.92 seconds
+2024-10-20 23:05:44 - Video creation: 76.57 seconds
+2024-10-20 23:05:44 - Total execution time: 112.90 seconds
+2024-10-20 23:12:58 - Video creation started
+2024-10-20 23:12:58 - Main script started
+2024-10-20 23:12:58 - Starting to generate story and assets...
+2024-10-20 23:12:58 - Generating story prompts for subtitles and images...
+2024-10-20 23:13:00 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-20 23:13:03 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-20 23:13:03 - Story prompts generated in 5.53 seconds.
+2024-10-20 23:13:03 - Generating audio for character...
+2024-10-20 23:13:05 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:05 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:05 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:05 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:05 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:06 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:06 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:07 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:07 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:07 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:13:08 - Audio generated: 4.39 seconds
+2024-10-20 23:13:08 - Reading image prompts...
+2024-10-20 23:13:08 - Image prompts read: 0.00 seconds
+2024-10-20 23:13:08 - Generating images from prompts...
+2024-10-20 23:13:32 - Images generated: 24.01 seconds
+2024-10-20 23:13:32 - Total story and assets generation time: 33.94 seconds
+2024-10-20 23:13:32 - Story and assets generation completed!
+2024-10-20 23:13:32 - Starting video creation...
+2024-10-20 23:13:32 - process_audio: 0.57 seconds
+2024-10-20 23:13:40 - process_image_to_video (Image 4): 7.96 seconds
+2024-10-20 23:13:41 - process_image_to_video (Image 8): 9.47 seconds
+2024-10-20 23:13:42 - process_image_to_video (Image 6): 9.88 seconds
+2024-10-20 23:13:42 - process_image_to_video (Image 7): 10.23 seconds
+2024-10-20 23:13:42 - process_image_to_video (Image 9): 10.34 seconds
+2024-10-20 23:13:42 - process_image_to_video (Image 5): 10.47 seconds
+2024-10-20 23:13:43 - process_image_to_video (Image 3): 10.93 seconds
+2024-10-20 23:13:43 - process_image_to_video (Image 10): 11.02 seconds
+2024-10-20 23:13:43 - process_image_to_video (Image 1): 11.02 seconds
+2024-10-20 23:13:43 - process_image_to_video (Image 2): 11.38 seconds
+2024-10-20 23:13:48 - HTTP Request: POST https://api.openai.com/v1/audio/transcriptions "HTTP/1.1 200 OK"
+2024-10-20 23:13:48 - generate_subtitles_from_audio (Whisper): 4.51 seconds
+2024-10-20 23:13:48 - Parallel tasks (videos, audio, transcription): 15.97 seconds
+2024-10-20 23:14:12 - merge_videos: 24.20 seconds
+2024-10-20 23:14:41 - add_particle_effect: 29.11 seconds
+2024-10-20 23:14:41 - generate_subtitle_file: 0.00 seconds
+2024-10-20 23:14:41 - modify_subtitle_style: 0.01 seconds
+2024-10-20 23:14:48 - add_subtitles_with_audio: 7.06 seconds
+2024-10-20 23:14:49 - add_bg_music: 0.98 seconds
+2024-10-20 23:14:49 - Video creation: 77.32 seconds
+2024-10-20 23:14:49 - Total execution time: 111.26 seconds
+2024-10-20 23:23:22 - Video creation started
+2024-10-20 23:23:22 - Main script started
+2024-10-20 23:23:22 - Starting to generate story and assets...
+2024-10-20 23:23:22 - Generating story prompts for subtitles and images...
+2024-10-20 23:23:23 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-20 23:23:28 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-20 23:23:28 - Story prompts generated in 6.25 seconds.
+2024-10-20 23:23:28 - Generating audio for character...
+2024-10-20 23:23:29 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:29 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:29 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:30 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:30 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:31 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:31 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:31 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:31 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:31 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:23:32 - Audio generated: 4.12 seconds
+2024-10-20 23:23:32 - Reading image prompts...
+2024-10-20 23:23:32 - Image prompts read: 0.00 seconds
+2024-10-20 23:23:32 - Generating images from prompts...
+2024-10-20 23:24:55 - Images generated: 82.66 seconds
+2024-10-20 23:24:55 - Total story and assets generation time: 93.04 seconds
+2024-10-20 23:24:55 - Story and assets generation completed!
+2024-10-20 23:24:55 - Starting video creation...
+2024-10-20 23:24:55 - process_audio: 0.29 seconds
+2024-10-20 23:28:21 - Video creation started
+2024-10-20 23:28:21 - Main script started
+2024-10-20 23:28:21 - Starting to generate story and assets...
+2024-10-20 23:28:21 - Generating story prompts for subtitles and images...
+2024-10-20 23:28:24 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-20 23:28:26 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-10-20 23:28:26 - Story prompts generated in 4.48 seconds.
+2024-10-20 23:28:26 - Generating audio for character...
+2024-10-20 23:28:27 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:27 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:27 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:28 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:28 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:29 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:29 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:29 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:29 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:30 - HTTP Request: POST https://api.openai.com/v1/audio/speech "HTTP/1.1 200 OK"
+2024-10-20 23:28:31 - Audio generated: 5.12 seconds
+2024-10-20 23:28:31 - Reading image prompts...
+2024-10-20 23:28:31 - Image prompts read: 0.00 seconds
+2024-10-20 23:28:31 - Generating images from prompts...
+2024-10-20 23:28:56 - Images generated: 25.46 seconds
+2024-10-20 23:28:56 - Total story and assets generation time: 35.06 seconds
+2024-10-20 23:28:56 - Story and assets generation completed!
+2024-10-20 23:28:56 - Starting video creation...
+2024-10-20 23:28:57 - process_audio: 0.17 seconds
+2024-10-20 23:29:05 - process_image_to_video (Image 10): 8.80 seconds
+2024-10-20 23:29:06 - process_image_to_video (Image 4): 9.13 seconds
+2024-10-20 23:29:06 - process_image_to_video (Image 3): 9.95 seconds
+2024-10-20 23:29:07 - process_image_to_video (Image 9): 10.65 seconds
+2024-10-20 23:29:07 - process_image_to_video (Image 5): 10.75 seconds
+2024-10-20 23:29:07 - process_image_to_video (Image 1): 10.88 seconds
+2024-10-20 23:29:07 - process_image_to_video (Image 2): 11.03 seconds
+2024-10-20 23:29:08 - process_image_to_video (Image 6): 11.07 seconds
+2024-10-20 23:29:08 - process_image_to_video (Image 8): 11.11 seconds
+2024-10-20 23:29:08 - process_image_to_video (Image 7): 11.13 seconds
+2024-10-20 23:29:12 - HTTP Request: POST https://api.openai.com/v1/audio/transcriptions "HTTP/1.1 200 OK"
+2024-10-20 23:29:12 - generate_subtitles_from_audio (Whisper): 4.85 seconds
+2024-10-20 23:29:12 - Parallel tasks (videos, audio, transcription): 16.04 seconds
+2024-10-20 23:29:36 - merge_videos: 23.63 seconds
+2024-10-20 23:30:03 - add_particle_effect: 27.08 seconds
+2024-10-20 23:30:03 - generate_subtitle_file: 0.00 seconds
+2024-10-20 23:30:03 - modify_subtitle_style: 0.01 seconds
+2024-10-20 23:30:10 - add_subtitles_with_audio: 6.72 seconds
+2024-10-20 23:30:11 - add_bg_music: 0.80 seconds
+2024-10-20 23:30:11 - Video creation: 74.29 seconds
+2024-10-20 23:30:11 - Total execution time: 109.35 seconds

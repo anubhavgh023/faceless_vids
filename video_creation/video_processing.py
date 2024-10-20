@@ -1,30 +1,23 @@
 import os
 import subprocess
 
-# Function to merge videos
-def merge_videos(input_videos, output_video):
-    try:
-        with open("videos_list.txt", "w") as file:
-            for video in input_videos:
-                file.write(f"file '{video}'\n")
-
-        subprocess.run(
-            f"ffmpeg -y -f concat -safe 0 -i videos_list.txt -c copy {output_video}",
-            shell=True,
-            check=True,
-        )
-        os.remove("videos_list.txt")
-        print(f"Merged video saved as '{output_video}'")
-    except Exception as e:
-        print(f"Error merging videos: {e}")
-
 # Function to add subtitles with merged audio to the video
 def add_subtitles_with_audio(input_video, subtitle_file, audio_file, output_video):
+    # -- working --
+    # ffmpeg_command = (
+    #     f"ffmpeg -y -i {input_video} -i {audio_file} "
+    #     f'-vf "ass={subtitle_file}:fontsdir=fonts" '
+    #     f"-c:v libx264 -pix_fmt yuv420p -r 30 -c:a aac -b:a 192k "
+    #     f"-shortest -t 46 {output_video}"  # Trim the video to match audio duration
+    # )
+    #--
+
+    # testing
     ffmpeg_command = (
         f"ffmpeg -y -i {input_video} -i {audio_file} "
         f'-vf "ass={subtitle_file}:fontsdir=fonts" '
         f"-c:v libx264 -pix_fmt yuv420p -r 30 -c:a aac -b:a 192k "
-        f"-shortest -t 46 {output_video}"  # Trim the video to match audio duration
+        f"-preset veryfast -movflags +faststart {output_video}"
     )
     try:
         subprocess.run(ffmpeg_command, shell=True, check=True)
@@ -37,7 +30,7 @@ def add_subtitles_with_audio(input_video, subtitle_file, audio_file, output_vide
 def add_bg_music(final_video, bg_music_path, output_video):
     ffmpeg_command = (
     f"ffmpeg -i {final_video} -i {bg_music_path} "
-    f'-filter_complex "[0:a]volume=1.0[a0];[1:a]volume=0.09[a1];[a0][a1]amix=inputs=2:duration=shortest" '
+    f'-filter_complex "[0:a]volume=1.0[a0];[1:a]volume=0.02[a1];[a0][a1]amix=inputs=2:duration=shortest" '
     f"-c:v copy -c:a aac -b:a 192k {output_video}"
 )
     try:

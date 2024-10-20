@@ -1,59 +1,113 @@
+from openai import OpenAI
+import requests
 import os
-import random
+from dotenv import load_dotenv
+import datetime
 import pysubs2
 
+load_dotenv()
+
+# client = OpenAI()
+# client.api_key = os.getenv("OPENAI_API_KEY")
+
+# audio_file = open("assets/audio/combined_story_audio.mp3", "rb")
+
+# transcript = client.audio.transcriptions.create(
+#   file=audio_file,
+#   model="whisper-1",
+#   response_format="verbose_json",
+#   timestamp_granularities=["word"]
+# )
+
+
+# check the str file for missing milliseconds
+def format_time_with_default_milliseconds(seconds):
+    time_str = str(datetime.timedelta(seconds=seconds))
+    if "." not in time_str:
+        time_str += ".0600"  # Add default milliseconds if missing
+    time_str = time_str.replace('.', ',')[:12]
+    return time_str
 
 # Function to generate a subtitle file with correct .srt formatting
-def generate_subtitle_file(words_with_timings, output_subtitle_file):
+def generate_subtitle_file(transcript_words, output_file):
     try:
-        with open(output_subtitle_file, "w") as f:
-            for i, (word, start, end) in enumerate(words_with_timings):
-                start_time = f"{int(start // 3600):02}:{int((start % 3600) // 60):02}:{int(start % 60):02},{int((start % 1) * 1000):03}"
-                end_time = f"{int(end // 3600):02}:{int((end % 3600) // 60):02}:{int(end % 60):02},{int((end % 1) * 1000):03}"
-                f.write(f"{i + 1}\n{start_time} --> {end_time}\n{word}\n\n")
+        with open(output_file, 'w', encoding='utf-8') as srt_file:
+            subtitle_index = 1
+            current_line = []
+            line_start = transcript_words[0].start
 
-        print(f"Subtitle file saved as '{output_subtitle_file}'")
+            for i, word in enumerate(transcript_words):
+                current_line.append(word.word)
+                
+                if len(current_line) == 2 or i == len(transcript_words) - 1:
+                    line_end = word.end
+                    line_text = ' '.join(current_line)
+                    
+                    start_time = format_time_with_default_milliseconds(line_start)
+                    end_time = format_time_with_default_milliseconds(line_end)
+                    
+                    srt_file.write(f"{subtitle_index}\n")
+                    srt_file.write(f"{start_time} --> {end_time}\n")
+                    srt_file.write(f"{line_text}\n\n")
+                    
+                    subtitle_index += 1
+                    current_line = []
+                    if i < len(transcript_words) - 1:
+                        line_start = transcript_words[i + 1].start
+
+        print(f"SRT file has been generated: {output_file}")
 
     except Exception as e:
         print(f"Error generating subtitle file: {e}")
 
-def modify_subtitle_style(srt_file, output_ass_file):
-    try:
-        # Load the subtitle file
-        subs = pysubs2.load(srt_file, encoding="utf-8")
+def modify_subtitle_style(srt_file, ass_file):
+    # Load the SRT file
+    subs = pysubs2.load(srt_file, encoding="utf-8")
 
-        # Modify the default subtitle style
-        for style in subs.styles.values():
-            style.fontname = "Open Sans"
-            style.fontsize = 28
-            style.bold = True
-            style.primarycolor = pysubs2.Color(255, 255, 255)  # White
-            style.backcolor = pysubs2.Color(0, 0, 0, 255)  # Black background
-            style.outlinecolor = pysubs2.Color(0, 0, 0)  # Black outline
-            style.outline = 2
-            style.alignment = pysubs2.Alignment.MIDDLE_CENTER
+    # Modify the default subtitle style
+    for style in subs.styles.values():
+        style.fontname = "Open Sans"
+        style.fontsize = 28
+        style.bold = True
+        style.primarycolor = pysubs2.Color(255, 255, 255)  # White
+        style.backcolor = pysubs2.Color(0, 0, 0, 255)  # Black background
+        style.outlinecolor = pysubs2.Color(0, 0, 0)  # Black outline
+        style.outline = 1.5
+        style.alignment = pysubs2.Alignment.MIDDLE_CENTER
 
-        # Apply the color transitions
-        for event in subs.events:
-            words = event.text.split()
+        # style.backcolor = pysubs2.Color(255,192,18,80) # yellow
+        # style.backcolor = pysubs2.Color(0, 0, 139, 80)  # Dark Blue
+        style.backcolor = pysubs2.Color(75, 0, 130, 100)  # Dark Purple
+        style.shadow = 1
 
-            if len(words) == 1:
-                # Single word case, make it yellow for the full duration
-                styled_text = f"{{\\c&H00FFFF&}}{words[0]}"
-            elif len(words) == 2:
-                # First word yellow for first 0.5 seconds, then turns white
-                # Second word stays white initially, turns yellow after 0.5 seconds
-                styled_text = (
-                    f"{{\\c&H00FFFF&}}{words[0]}{{\\t(500,\\c&HFFFFFF&)}}"  # Word 1 changes to white after 0.5s
-                    f" {{\\c&HFFFFFF&}}{{\\t(500,\\c&H00FFFF&)}}{words[1]}"  # Word 2 changes to yellow after 0.5s
-                )
+    # Ensure subtitles and timings are handled properly
+    for line in subs:
+        # Ensure no timing info is appended to the text
+        line_text = line.text.strip()  # Clean any leading/trailing whitespace
+        words = line_text.split()  # Split text into words
+        word_duration = line.duration / len(words) if words else 0
 
-            # Update the event text with the styled text
-            event.text = styled_text
+        current_time = line.start
+        new_events = []
 
-        # Save the modified subtitle file
-        subs.save(output_ass_file)
-        print(f"Modified subtitles saved as '{output_ass_file}'")
-    except Exception as e:
-        print(f"Error modifying subtitles: {e}")
+        for i, word in enumerate(words):
+            end_time = current_time + word_duration
+            # highlighted_text = f"{{\\c&HCC99FF&}}{word}{{\\c&HFFFFFF&}}" # purple/white
+            highlighted_text = f"{{\\c&H00D7FF&}}{word}{{\\c&HFFFFFF&}}"  # gold/white
 
+            # Create a new event for each word with highlighting
+            new_line = pysubs2.SSAEvent(
+                start=current_time, end=end_time, text=highlighted_text
+            )
+            new_events.append(new_line)
+
+            current_time = end_time
+
+        # Replace the original line with multiple word-level events
+        subs.events.remove(line)
+        subs.events.extend(new_events)
+
+    # Save the result to ASS format
+    subs.save(ass_file)
+
+    print(f"str file modified: {ass_file}")
