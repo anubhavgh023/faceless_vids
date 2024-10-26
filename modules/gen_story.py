@@ -1,4 +1,5 @@
 # normal generation of sentences, improved prompts
+import asyncio
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -13,7 +14,7 @@ client.api_key = os.getenv("OPENAI_API_KEY")
 
 
 # Generate story-prompts which are going be used as subtitles
-def subtitle_generator_story(prompt: str, duration: int):
+async def subtitle_generator_story(prompt: str, duration: int):
     try:
         # Define number of sentences based on duration
         if duration == 45:
@@ -33,7 +34,7 @@ def subtitle_generator_story(prompt: str, duration: int):
                 {"role": "system", "content": "You are a short storyteller."},
                 {
                     "role": "user",
-                    "content": f"Write a compelling story in exactly {num_of_sentences} sentences about {prompt}, each sentence should be of 11 words each, A sentence ends when there is a full stop(.). Keep the language concise yet engaging, focusing on clear narrative flow and emotional depth. Ensure each sentence naturally follows the previous one, creating a cohesive short story.",
+                    "content": f"Write a compelling story in exactly {num_of_sentences} sentences about {prompt}, each sentence should be of 8 words each, A sentence ends when there is a full stop(.). Keep the language concise yet engaging, focusing on clear narrative flow and emotional depth. Ensure each sentence naturally follows the previous one, creating a cohesive short story.",
                 },
             ],
         )
@@ -57,7 +58,7 @@ def subtitle_generator_story(prompt: str, duration: int):
 
 
 # Generate story-prompts to which are going to be used to gen images
-def image_generator_story(prompt: str, duration: int):
+async def image_generator_story(prompt: str, duration: int):
     try:
         # Define number of sentences based on duration
         if duration == 45:
@@ -77,11 +78,23 @@ def image_generator_story(prompt: str, duration: int):
                 {"role": "system", "content": "You are a storyteller."},
                 {
                     "role": "user",
-                    "content": f"""Create a visually rich story of exactly {num_of_sentences} sentences based on the prompt: '{prompt}'.
+                    "content": f"""
+                        Create a visually rich story of exactly {num_of_sentences} sentences based on the following prompt:
+                        '{prompt}'
+                        Each sentence should be approximately 50 words, focusing on:
 
-                        Each sentence should be around 50 words, focusing on vivid visual elements (colors, textures, light), sensory details (sounds, smells, touch), motion, and atmosphere. Alternate between wide, sweeping views and close-up details to create a cinematic, immersive narrative that inspires visual storytelling.
+                        Vivid visual elements (colors, textures, lighting)
+                        Sensory details (sounds, smells, tactile experiences)
+                        Motion and action
+                        Atmospheric details that evoke mood and setting
 
-                        Ensure each sentence serves as a clear, captivating visual scene, perfect for illustrations or film compositions.""",
+                        Alternate between:
+
+                        Wide, sweeping views that establish the scene
+                        Close-up details that draw the viewer into the narrative
+
+                        The goal is to craft a cinematic, immersive narrative that inspires visual storytelling and lends itself well to illustration or film composition.
+                        Each sentence should stand alone as a captivating visual scene, while also seamlessly flowing together to create a cohesive story."""
                 },
             ],
         )

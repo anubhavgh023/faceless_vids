@@ -1,92 +1,237 @@
-import concurrent.futures
 import asyncio
-import time
-import traceback
-import sys
 import logging
+import time
+from pathlib import Path
+from typing import Optional, List, Tuple
 
 from modules.gen_story import subtitle_generator_story, image_generator_story
-from modules.gen_audio import generate_audio
+from modules.gen_audio import (
+    generate_audio,
+    create_voice_clone,
+    delete_cloned_voice,
+    DEFAULT_VOICES,
+)
 from modules.gen_image import read_prompts, generate_images_from_prompts
-from video_creation.create_video import log_time_taken
-from video_creation.create_video import create_video
+from video_creation.create_video import create_video, log_time_taken
 
-logging.info("Main script started")
 
-def generate_story_and_assets(prompt: str, duration: int, character: str, style: str):
+async def generate_story_content(prompt: str, duration: int):
+    """Generate subtitles and image prompts concurrently"""
     start_time = time.time()
-    
-    # 1. Generate story prompts for subtitles and images using threads
-    logging.info("Generating story prompts for subtitles and images...")
-    step_start = time.time()
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = [
-            executor.submit(subtitle_generator_story, prompt, duration),
-            executor.submit(image_generator_story, prompt, duration),
-        ]
-        concurrent.futures.wait(futures)
-    step_end = time.time()
-    logging.info(f"Story prompts generated in {step_end - step_start:.2f} seconds.")
 
-    # 2. Generate audio for the character
-    step_start = time.time()
-    logging.info("Generating audio for character...")
-    generate_audio(character)
-    step_end = time.time()
-    log_time_taken("Audio generated", step_start, step_end)
+    # Run story generation tasks concurrently
+    subtitle_task = asyncio.create_task(subtitle_generator_story(prompt, duration))
+    image_prompt_task = asyncio.create_task(image_generator_story(prompt, duration))
+    await asyncio.gather(subtitle_task, image_prompt_task)
 
-    # 3. Generate images based on the image prompts
-    step_start = time.time()
-    logging.info("Reading image prompts...")
-    prompts_file = "prompts/img_gen_prompts.txt"
-    prompts = asyncio.run(read_prompts(prompts_file))
-    step_end = time.time()
-    log_time_taken("Image prompts read", step_start, step_end)
+    log_time_taken("Story content generation", start_time, time.time())
 
 
-    if prompts:
-        logging.info("Generating images from prompts...")
-        step_start = time.time()
-        asyncio.run(generate_images_from_prompts(prompts, style))
-        step_end = time.time()
-        log_time_taken("Images generated", step_start, step_end)
-
-    else:
-        logging.warning(f"No prompts found in {prompts_file}")
-
-    end_time = time.time()
-    log_time_taken("Total story and assets generation time", start_time, end_time)
-
-
-def main():
-    prompt = "A boy proposing a girl in front of eiffel tower"
-    duration = 45  # Duration in seconds for the story
-    character = "echo"  # Character for the audio generation
-    style = "realistic"
-
-    total_start_time = time.time()
+async def process_voice(
+    voice_character: str, voice_samples: Optional[List[str]] = None
+) -> Tuple[bool, str, Optional[str]]:
+    """
+    Generate audio using either default voice or cloned voice
+    Returns: (success, result_path, cloned_voice_id)
+    """
+    start_time = time.time()
+    cloned_voice_id = None
 
     try:
-        # Start generating the story and assets
-        logging.info("Starting to generate story and assets...")
-        generate_story_and_assets(prompt, duration, character, style)
-        logging.info("Story and assets generation completed!")
+        if voice_samples:
+            cloned_voice_id = create_voice_clone(
+                voice_samples=voice_samples, voice_name="temp_voice_clone"
+            )
 
-        # Create the video after generating assets
-        logging.info("Starting video creation...")
-        step_start = time.time()
-        create_video(output_video_duration=duration)  # Assuming create_video() handles the full video creation process
-        step_end = time.time()
-        log_time_taken("Video creation", step_start, step_end)
+            if not cloned_voice_id:
+                raise Exception("Voice cloning failed")
+
+            logging.info(f"Voice clone created with ID: {cloned_voice_id}")
+
+            # Use cloned voice for generation
+            success, result = generate_audio(
+                character="clone",
+                voice_samples=voice_samples,
+                output_path="video_creation/assets/audio/combined_story_audio.wav",
+            )
+        else:
+            # Validate default voice
+            if voice_character.lower() not in DEFAULT_VOICES:
+                raise Exception(f"Invalid voice character: {voice_character}")
+
+            # Use default voice
+            success, result = generate_audio(
+                character=voice_character,
+                output_path="assets/audio/combined_story_audio.wav",
+            )
+
+        log_time_taken("Audio generation", start_time, time.time())
+
+        if not success:
+            raise Exception(f"Audio generation failed: {result}")
+
+        return success, result, cloned_voice_id
 
     except Exception as e:
-        logging.error(f"An error occurred: {str(e)}")
-        logging.error("Traceback:", exc_info=True)
-        sys.exit(1)
+        logging.error(f"Error in audio generation: {str(e)}")
+        # Clean up cloned voice if there was an error
+        if cloned_voice_id:
+            delete_cloned_voice(cloned_voice_id)
+        raise
 
-    total_end_time = time.time()
-    log_time_taken("Total execution time", total_start_time, total_end_time)
+
+async def generate_images(style: str):
+    """Generate images from prompts"""
+    start_time = time.time()
+
+    try:
+        prompts = await read_prompts("prompts/img_gen_prompts.txt")
+        if not prompts:
+            raise ValueError("No image prompts found in file")
+
+        await generate_images_from_prompts(prompts, style)
+        log_time_taken("Image generation", start_time, time.time())
+
+    except Exception as e:
+        logging.error(f"Error in image generation: {str(e)}")
+        raise
 
 
+async def generate_video(
+    prompt: str,
+    duration: int,
+    style: str,
+    voice_character: str,
+    voice_files: Optional[List[str]] = None,
+) -> str:
+    """Main function to handle video generation process"""
+    total_start_time = time.time()
+    cloned_voice_id = None
+
+    try:
+        # # 1. Generate story content
+        # await generate_story_content(prompt, duration)
+
+        # # 2. Generate audio and images concurrently
+        # audio_task = process_voice(voice_character, voice_files)
+        # images_task = generate_images(style)
+
+        # # Wait for both tasks to complete
+        # (audio_success, audio_path, cloned_voice_id), _ = await asyncio.gather(
+        #     audio_task, images_task
+        # )
+
+        # if not audio_success:
+        #     raise Exception(f"Audio generation failed: {audio_path}")
+
+        # 3. Create final video
+        start_time = time.time()
+        video_path = await create_video(output_video_duration=duration)
+        log_time_taken("Video creation", start_time, time.time())
+
+        # Log total time taken
+        log_time_taken("Total video generation", total_start_time, time.time())
+
+        return video_path
+
+    except Exception as e:
+        logging.error(f"Error in video generation: {str(e)}", exc_info=True)
+        raise
+    finally:
+        # Always clean up cloned voice if it exists
+        if cloned_voice_id:
+            logging.info(f"Cleaning up cloned voice: {cloned_voice_id}")
+            if delete_cloned_voice(cloned_voice_id):
+                logging.info("Successfully deleted cloned voice")
+            else:
+                logging.error("Failed to delete cloned voice")
+
+
+# # FastAPI integration
+# from fastapi import FastAPI, UploadFile, File, HTTPException
+# from fastapi.responses import JSONResponse
+# from typing import List
+
+# app = FastAPI()
+
+# @app.post("/generate-video")
+# async def handle_video_request(
+#     prompt: str,
+#     duration: int,
+#     style: str,
+#     voice_character: str,
+#     voice_files: List[UploadFile] = File(None)
+# ):
+#     uploaded_files = []
+#     try:
+#         # Handle voice files if provided
+#         if voice_files:
+#             # Create uploads directory
+#             uploads_dir = Path("uploads")
+#             uploads_dir.mkdir(exist_ok=True)
+
+#             # Save all uploaded files
+#             uploaded_files = []
+#             for voice_file in voice_files:
+#                 file_path = str(uploads_dir / voice_file.filename)
+#                 with open(file_path, "wb") as f:
+#                     f.write(await voice_file.read())
+#                 uploaded_files.append(file_path)
+
+#         # Generate video
+#         video_path = await generate_video(
+#             prompt=prompt,
+#             duration=duration,
+#             style=style,
+#             voice_character=voice_character,
+#             voice_files=uploaded_files if uploaded_files else None
+#         )
+
+#         return JSONResponse({
+#             "success": True,
+#             "video_path": video_path
+#         })
+
+#     except Exception as e:
+#         logging.error(f"Error processing request: {str(e)}")
+#         return JSONResponse(
+#             status_code=500,
+#             content={"success": False, "error": str(e)}
+#         )
+#     finally:
+#         # Clean up uploaded files
+#         for file_path in uploaded_files:
+#             try:
+#                 Path(file_path).unlink()
+#             except Exception as e:
+#                 logging.error(f"Error deleting uploaded file {file_path}: {str(e)}")
+
+# For testing
 if __name__ == "__main__":
-    main()
+
+    async def test_video_generation():
+        try:
+            # # Test with default voice
+            # video_path = await generate_video(
+            #     prompt="Inter galactic war in the universe near black hole with spaceships.",
+            #     duration=45,
+            #     style="realistic",
+            #     voice_character="allison"
+            # )
+            # logging.info(f"Video generated successfully at: {video_path}")
+
+            # Test with voice cloning
+            sample_files = ["uploads/b1.mpeg", "uploads/b2.mpeg", "uploads/b3.mpeg"]
+            video_path = await generate_video(
+                prompt="Star wars in universe",
+                duration=45,
+                style="anime",
+                voice_character="clone",
+                voice_files=sample_files,
+            )
+            logging.info(f"Video generated with cloned voice at: {video_path}")
+
+        except Exception as e:
+            logging.error(f"Test failed: {str(e)}")
+
+    asyncio.run(test_video_generation())

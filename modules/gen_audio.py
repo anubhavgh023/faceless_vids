@@ -1,63 +1,160 @@
 import os
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from openai import OpenAI
+import requests
+from pydub import AudioSegment
 from dotenv import load_dotenv
+import io
+import logging
+from typing import Optional, Dict, List, Tuple
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
+XI_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 
-# Initialize OpenAI client
-client = OpenAI()
-client.api_key = os.getenv("OPENAI_API_KEY")
+# Default voices dictionary
+DEFAULT_VOICES = {
+    "allison": "cgSgspJ2msm6clMCkdW9",
+    "rachel": "21m00Tcm4TlvDq8ikWAM",
+    "alice": "Xb7hH8MSUJpSbSDYk0k2",
+    "aria": "9BWtsMINqrJLrRacOk9x",
+    "bill": "pqHfZKP75CvOlQylNhV4",
+    "daniel": "onwK4e9ZLuTAKqWW03F9"
+}
 
-# Max retry attempts
-MAX_RETRIES = 3
-TIMEOUT_SECONDS = 3
+def create_voice_clone(voice_samples: List[str], voice_name: str) -> Optional[str]:
+    """Create a voice clone from provided samples."""
+    try:
+        files = [
+            ('files', (os.path.basename(f), open(f, 'rb'), 'audio/mpeg'))
+            for f in voice_samples
+        ]
 
-def generate_audio_for_prompt(character, prompt, index, audio_dir):
-    """Generates audio for a single prompt with retries and timeouts."""
-    retries = 0
-    while retries < MAX_RETRIES:
-        try:
-            # Call the API to generate the audio with a timeout
-            audio_response = client.audio.speech.create(
-                model="tts-1",
-                voice=character,
-                input=prompt,
-                timeout=TIMEOUT_SECONDS  # Set timeout for API call
-            )
-            
-            # Save the audio file
-            audio_file = f"{audio_dir}prompt_{index}.mp3"
-            with open(audio_file, "wb") as f:
-                f.write(audio_response.content)  # Save audio binary data to file
+        response = requests.post(
+            "https://api.elevenlabs.io/v1/voices/add",
+            headers={"xi-api-key": XI_API_KEY},
+            data={
+                "name": voice_name,
+                "description": "Temporary cloned voice"
+            },
+            files=files,
+        )
 
-            print(f"Audio for prompt {index} saved as 'prompt_{index}.mp3'")
-            return  # Exit if successful
+        if response.status_code != 200:
+            raise Exception(f"Voice cloning failed: {response.text}")
 
-        except Exception as e:
-            retries += 1
-            print(f"Error generating audio for prompt {index}: {e}. Retrying ({retries}/{MAX_RETRIES})...")
+        voice_id = response.json()["voice_id"]
+        logger.info(f"Successfully created voice clone with ID: {voice_id}")
+        return voice_id
 
-            # Optional: Wait a bit before retrying
-            time.sleep(2)
+    except Exception as e:
+        logger.error(f"Error in voice cloning: {str(e)}")
+        return None
+
+def delete_cloned_voice(voice_id: str) -> bool:
+    """Delete a cloned voice by ID."""
+    try:
+        response = requests.delete(
+            f"https://api.elevenlabs.io/v1/voices/{voice_id}",
+            headers={"xi-api-key": XI_API_KEY}
+        )
+
+        if response.status_code != 200:
+            raise Exception(f"Voice deletion failed: {response.text}")
+
+        logger.info(f"Successfully deleted cloned voice: {voice_id}")
+        return True
+
+    except Exception as e:
+        logger.error(f"Error deleting voice: {str(e)}")
+        return False
+
+def generate_audio(
+    character: str,
+    voice_samples: Optional[List[str]] = None,
+    output_path: str = "assets/audio/combined_story_audio.wav"
+) -> Tuple[bool, str]:
+    """
+    Generate audio using either a default voice or a cloned voice.
     
-    print(f"Failed to generate audio for prompt {index} after {MAX_RETRIES} attempts.")
+    Args:
+        character (str): Name of default voice OR "clone" for voice cloning
+        voice_samples (Optional[List[str]]): List of paths to voice samples if cloning
+        output_path (str): Path for the output audio file
+    
+    Returns:
+        Tuple[bool, str]: (Success status, Output path or error message)
+    """
+    try:
+        # Read all prompts
+        with open("prompts/subtitle_gen_prompts.txt", "r") as f:
+            paragraphs = f.read().splitlines()
 
-def generate_audio(character: str):
-    """Generates audio for all prompts using a thread pool."""
-    # Load text prompts for the voiceover
-    with open("prompts/subtitle_gen_prompts.txt", "r") as f:
-        prompts = f.read().splitlines()
+        # Determine voice ID
+        voice_id = None
+        is_clone = False
 
-    audio_dir = "video_creation/assets/audio/"
-    os.makedirs(audio_dir, exist_ok=True)
+        if character.lower() == "clone":
+            if not voice_samples:
+                return False, "Voice samples required for cloning"
+            
+            voice_id = create_voice_clone(voice_samples, "temporary_voice")
+            if not voice_id:
+                return False, "Voice cloning failed"
+            is_clone = True
+        else:
+            # Using default voice
+            character = character.lower()
+            if character not in DEFAULT_VOICES:
+                return False, f"Voice '{character}' not found in default voices"
+            voice_id = DEFAULT_VOICES[character]
 
-    # Use ThreadPoolExecutor to run tasks concurrently
-    with ThreadPoolExecutor(max_workers=5) as executor:
-        futures = [executor.submit(generate_audio_for_prompt, character, prompt, i, audio_dir) 
-                   for i, prompt in enumerate(prompts, start=1)]
+        try:
+            # Generate audio segments
+            segments = []
+            for i, paragraph in enumerate(paragraphs):
+                is_last_paragraph = i == len(paragraphs) - 1
+                is_first_paragraph = i == 0
+                
+                response = requests.post(
+                    f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream",
+                    json={
+                        "text": paragraph,
+                        "model_id": "eleven_multilingual_v2",
+                        "previous_text": None if is_first_paragraph else " ".join(paragraphs[:i]),
+                        "next_text": None if is_last_paragraph else " ".join(paragraphs[i + 1:]),
+                    },
+                    headers={"xi-api-key": XI_API_KEY}
+                )
 
-        # Wait for all tasks to complete
-        for future in as_completed(futures):
-            future.result()
+                if response.status_code != 200:
+                    raise Exception(f"API Error: {response.status_code} - {response.text}")
+
+                logger.info(f"Generated audio for paragraph {i + 1}/{len(paragraphs)}")
+                segments.append(AudioSegment.from_mp3(io.BytesIO(response.content)))
+
+            # Combine all segments
+            final_audio = segments[0]
+            for segment in segments[1:]:
+                final_audio = final_audio + segment
+
+            # Ensure output directory exists
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            
+            # Export final audio
+            final_audio.export(output_path, format="wav")
+            logger.info(f"Successfully exported audio to {output_path}")
+
+            return True, output_path
+
+        finally:
+            # Clean up cloned voice if used
+            if is_clone and voice_id:
+                delete_cloned_voice(voice_id)
+
+    except Exception as e:
+        error_msg = f"Error in generate_audio: {str(e)}"
+        logger.error(error_msg)
+        return False, error_msg

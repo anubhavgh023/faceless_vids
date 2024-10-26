@@ -1,3 +1,4 @@
+import asyncio
 import os
 import time
 from concurrent.futures import ProcessPoolExecutor
@@ -28,14 +29,11 @@ from video_creation.video_processing import add_subtitles_with_audio, add_bg_mus
 
 # Set up logging configuration
 logging.basicConfig(
-    filename="video_creation_timings.log",
+    filename="logs/application.log",
     level=logging.INFO,
     format="%(asctime)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-
-logging.info("Video creation started")
-
 
 # Function to log timing information
 def log_time_taken(function_name, start_time, end_time):
@@ -72,20 +70,10 @@ def process_image_to_video(image_path, index, aspect_ratio="720:1280"):
     return output_video
 
 
-# Merge audio files into a single audio file.
-def process_audio(audio_paths):
-    start_time = time.time()  # Start time
-    combined_audio = os.path.join(audio_dir, "combined_story_audio.mp3")
-    merge_audios(audio_paths, combined_audio)
-    end_time = time.time()  # End time
-    log_time_taken("process_audio", start_time, end_time)
-    return combined_audio
-
-
 # Generate subtitles using Whisper from OpenAI.
 def generate_subtitles_from_audio():
     start_time = time.time()  # Start time
-    audio_file_path = os.path.join(audio_dir, "combined_story_audio.mp3")
+    audio_file_path = os.path.join(audio_dir, "combined_story_audio.wav")
     with open(audio_file_path, "rb") as audio_file:
         transcript = client.audio.transcriptions.create(
             file=audio_file,
@@ -99,7 +87,7 @@ def generate_subtitles_from_audio():
 
 
 # Main function to create the video from images, audio, and subtitles.
-def create_video(output_video_duration: int):
+async def create_video(output_video_duration: int):
     # Ensure directories exist
     os.makedirs(images_dir, exist_ok=True)
     os.makedirs(audio_dir, exist_ok=True)
@@ -126,19 +114,23 @@ def create_video(output_video_duration: int):
             executor.submit(process_image_to_video, img, i)
             for i, img in enumerate(images)
         ]
-        audio_future = executor.submit(process_audio, audios)
+        # audio_future = executor.submit(process_audio, audios)
         processed_videos = [future.result() for future in video_futures]
-        combined_audio = audio_future.result()  # Ensure the audio is created
-
-    # Step 2: Generate transcript synchronously
-    transcript = generate_subtitles_from_audio()
+        # combined_audio = audio_future.result()  # Ensure the audio is created
 
     end_time_parallel = time.time()
     log_time_taken(
-        "Parallel tasks (videos, audio, transcription)",
+        "Parallel tasks: img to videos:",
         start_time_parallel,
         end_time_parallel,
     )
+
+    # # Step 2: Generate transcript synchronously
+    start_transcript_time = time.time()
+    combined_audio = os.path.join(audio_dir,"combined_story_audio.wav")
+    transcript = generate_subtitles_from_audio()
+    end_transcript_time = time.time()
+    log_time_taken("Transcript generation:",start_transcript_time,end_transcript_time)
 
     # Step 3: Merge all generated videos (sequential)
     start_time_merge = time.time()
@@ -196,7 +188,7 @@ def create_video(output_video_duration: int):
     # Step 8: Add background music to the final video (sequential)
     start_time_bg_music = time.time()
     final_output_video = os.path.join(videos_dir, "final_output_video.mp4")
-    bg_music_path = os.path.join(bg_music_dir, "bgm_5.mp3")
+    bg_music_path = os.path.join(bg_music_dir, "bgm_6.mp3")
     add_bg_music(final_video_with_subtitles, bg_music_path, final_output_video)
     end_time_bg_music = time.time()
     log_time_taken("add_bg_music", start_time_bg_music, end_time_bg_music)
