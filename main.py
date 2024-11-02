@@ -109,20 +109,20 @@ async def generate_video(
     cloned_voice_id = None
 
     try:
-        # # 1. Generate story content
-        # await generate_story_content(prompt, duration)
+        # 1. Generate story content
+        await generate_story_content(prompt, duration)
 
-        # # 2. Generate audio and images concurrently
-        # audio_task = process_voice(voice_character, voice_files)
-        # images_task = generate_images(style)
+        # 2. Generate audio and images concurrently
+        audio_task = process_voice(voice_character, voice_files)
+        images_task = generate_images(style)
 
-        # # Wait for both tasks to complete
-        # (audio_success, audio_path, cloned_voice_id), _ = await asyncio.gather(
-        #     audio_task, images_task
-        # )
+        # Wait for both tasks to complete
+        (audio_success, audio_path, cloned_voice_id), _ = await asyncio.gather(
+            audio_task, images_task
+        )
 
-        # if not audio_success:
-        #     raise Exception(f"Audio generation failed: {audio_path}")
+        if not audio_success:
+            raise Exception(f"Audio generation failed: {audio_path}")
 
         # 3. Create final video
         start_time = time.time()
@@ -147,64 +147,72 @@ async def generate_video(
                 logging.error("Failed to delete cloned voice")
 
 
-# # FastAPI integration
-# from fastapi import FastAPI, UploadFile, File, HTTPException
-# from fastapi.responses import JSONResponse
-# from typing import List
+# FastAPI integration
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.responses import JSONResponse
+from typing import List
 
-# app = FastAPI()
+app = FastAPI()
 
-# @app.post("/generate-video")
-# async def handle_video_request(
-#     prompt: str,
-#     duration: int,
-#     style: str,
-#     voice_character: str,
-#     voice_files: List[UploadFile] = File(None)
-# ):
-#     uploaded_files = []
-#     try:
-#         # Handle voice files if provided
-#         if voice_files:
-#             # Create uploads directory
-#             uploads_dir = Path("uploads")
-#             uploads_dir.mkdir(exist_ok=True)
 
-#             # Save all uploaded files
-#             uploaded_files = []
-#             for voice_file in voice_files:
-#                 file_path = str(uploads_dir / voice_file.filename)
-#                 with open(file_path, "wb") as f:
-#                     f.write(await voice_file.read())
-#                 uploaded_files.append(file_path)
+@app.get("/")
+async def health_check():
+    return {"message":"health check endpoint"}
 
-#         # Generate video
-#         video_path = await generate_video(
-#             prompt=prompt,
-#             duration=duration,
-#             style=style,
-#             voice_character=voice_character,
-#             voice_files=uploaded_files if uploaded_files else None
-#         )
+@app.post("/generate-video")
+async def handle_video_request(
+    prompt: str, # fun fact , history video
+    duration: int,
+    style: str, 
+    bgm_audio: str,# add bgm option (optional)
+    voice_character: str,
+    voice_files: List[UploadFile] = File(None)
+):
+    uploaded_files = []
+    try:
+        # Handle voice files if provided
+        if voice_files:
+            # Create uploads directory
+            uploads_dir = Path("uploads")
+            uploads_dir.mkdir(exist_ok=True)
 
-#         return JSONResponse({
-#             "success": True,
-#             "video_path": video_path
-#         })
+            # Save all uploaded files
+            uploaded_files = []
+            for voice_file in voice_files:
+                file_path = str(uploads_dir / voice_file.filename)
+                with open(file_path, "wb") as f:
+                    f.write(await voice_file.read())
+                uploaded_files.append(file_path)
 
-#     except Exception as e:
-#         logging.error(f"Error processing request: {str(e)}")
-#         return JSONResponse(
-#             status_code=500,
-#             content={"success": False, "error": str(e)}
-#         )
-#     finally:
-#         # Clean up uploaded files
-#         for file_path in uploaded_files:
-#             try:
-#                 Path(file_path).unlink()
-#             except Exception as e:
-#                 logging.error(f"Error deleting uploaded file {file_path}: {str(e)}")
+        # Generate video
+        video_path = await generate_video(
+            prompt=prompt,
+            duration=duration,
+            style=style,
+            voice_character=voice_character,
+            voice_files=uploaded_files if uploaded_files else None
+        )
+
+        # TODO : upload video to s3
+
+        return JSONResponse({
+            "success": True,
+            "video_path": video_path # aws s3 link
+        })
+
+    except Exception as e:
+        logging.error(f"Error processing request: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={"success": False, "error": str(e)}
+        )
+    finally:
+        # Clean up uploaded files
+        for file_path in uploaded_files:
+            try:
+                Path(file_path).unlink()
+            except Exception as e:
+                logging.error(f"Error deleting uploaded file {file_path}: {str(e)}")
 
 # For testing
 if __name__ == "__main__":

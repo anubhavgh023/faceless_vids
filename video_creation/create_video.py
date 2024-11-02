@@ -35,6 +35,7 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
+
 # Function to log timing information
 def log_time_taken(function_name, start_time, end_time):
     time_taken = end_time - start_time
@@ -87,7 +88,7 @@ def generate_subtitles_from_audio():
 
 
 # Main function to create the video from images, audio, and subtitles.
-async def create_video(output_video_duration: int):
+async def create_video(output_video_duration: int, bgm_audio: str = "rift"):
     # Ensure directories exist
     os.makedirs(images_dir, exist_ok=True)
     os.makedirs(audio_dir, exist_ok=True)
@@ -127,10 +128,10 @@ async def create_video(output_video_duration: int):
 
     # # Step 2: Generate transcript synchronously
     start_transcript_time = time.time()
-    combined_audio = os.path.join(audio_dir,"combined_story_audio.wav")
+    combined_audio = os.path.join(audio_dir, "combined_story_audio.wav")
     transcript = generate_subtitles_from_audio()
     end_transcript_time = time.time()
-    log_time_taken("Transcript generation:",start_transcript_time,end_transcript_time)
+    log_time_taken("Transcript generation:", start_transcript_time, end_transcript_time)
 
     # Step 3: Merge all generated videos (sequential)
     start_time_merge = time.time()
@@ -188,7 +189,7 @@ async def create_video(output_video_duration: int):
     # Step 8: Add background music to the final video (sequential)
     start_time_bg_music = time.time()
     final_output_video = os.path.join(videos_dir, "final_output_video.mp4")
-    bg_music_path = os.path.join(bg_music_dir, "bgm_6.mp3")
+    bg_music_path = os.path.join(bg_music_dir, f"{bgm_audio}.mp3")  # passing selected bgm audio
     add_bg_music(final_video_with_subtitles, bg_music_path, final_output_video)
     end_time_bg_music = time.time()
     log_time_taken("add_bg_music", start_time_bg_music, end_time_bg_music)

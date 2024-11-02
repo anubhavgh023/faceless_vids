@@ -4,14 +4,6 @@ import subprocess
 
 # Function to add subtitles with merged audio to the video
 def add_subtitles_with_audio(input_video, subtitle_file, audio_file, output_video):
-    # -- working --
-    # ffmpeg_command = (
-    #     f"ffmpeg -y -i {input_video} -i {audio_file} "
-    #     f'-vf "ass={subtitle_file}:fontsdir=fonts" '
-    #     f"-c:v libx264 -pix_fmt yuv420p -r 30 -c:a aac -b:a 192k "
-    #     f"-shortest {output_video}"  # Trim the video to match audio duration
-    # )
-    # --
     ffmpeg_command = (
         f"ffmpeg -y "
         f"-i {input_video} "
