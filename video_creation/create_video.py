@@ -88,7 +88,7 @@ def generate_subtitles_from_audio():
 
 
 # Main function to create the video from images, audio, and subtitles.
-async def create_video(output_video_duration: int, bgm_audio: str = "rift"):
+async def create_video(output_video_duration: int, bgm_audio: str):
     # Ensure directories exist
     os.makedirs(images_dir, exist_ok=True)
     os.makedirs(audio_dir, exist_ok=True)
@@ -173,7 +173,7 @@ async def create_video(output_video_duration: int, bgm_audio: str = "rift"):
     # Step 7: Add subtitles with audio to the video (sequential)
     start_time_final_video = time.time()
     final_video_with_subtitles = os.path.join(
-        videos_dir, "final_video_with_subtitles.mp4"
+        videos_dir, "final_output_video_subtitles.mp4"
     )
     add_subtitles_with_audio(
         particle_final_output_file,
@@ -186,13 +186,15 @@ async def create_video(output_video_duration: int, bgm_audio: str = "rift"):
         "add_subtitles_with_audio", start_time_final_video, end_time_final_video
     )
 
+    # If there is no bgm_audio selected, don't do this step.
     # Step 8: Add background music to the final video (sequential)
-    start_time_bg_music = time.time()
-    final_output_video = os.path.join(videos_dir, "final_output_video.mp4")
-    bg_music_path = os.path.join(bg_music_dir, f"{bgm_audio}.mp3")  # passing selected bgm audio
-    add_bg_music(final_video_with_subtitles, bg_music_path, final_output_video)
-    end_time_bg_music = time.time()
-    log_time_taken("add_bg_music", start_time_bg_music, end_time_bg_music)
+    if bgm_audio != "":
+        start_time_bg_music = time.time()
+        final_output_video = os.path.join(videos_dir, "final_output_video_bgm.mp4")
+        bg_music_path = os.path.join(bg_music_dir, f"{bgm_audio}.mp3")  # passing selected bgm audio
+        add_bg_music(final_video_with_subtitles, bg_music_path, final_output_video)
+        end_time_bg_music = time.time()
+        log_time_taken("add_bg_music", start_time_bg_music, end_time_bg_music)
 
     print("Video processing completed successfully!")
 

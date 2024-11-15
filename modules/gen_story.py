@@ -18,7 +18,7 @@ async def subtitle_generator_story(prompt: str, duration: int):
     try:
         # Define number of sentences based on duration
         if duration == 45:
-            num_of_sentences = 10
+            num_of_sentences = 2 # TODO: change this to 10
         elif duration == 60:
             num_of_sentences = 13
         elif duration == 75:
@@ -62,7 +62,7 @@ async def image_generator_story(prompt: str, duration: int):
     try:
         # Define number of sentences based on duration
         if duration == 45:
-            num_of_sentences = 10
+            num_of_sentences = 2 # TODO: change this to 10
         elif duration == 60:
             num_of_sentences = 13
         elif duration == 75:

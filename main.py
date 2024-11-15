@@ -3,6 +3,7 @@ import logging
 import time
 from pathlib import Path
 from typing import Optional, List, Tuple
+import os
 
 from modules.gen_story import subtitle_generator_story, image_generator_story
 from modules.gen_audio import (
@@ -13,8 +14,28 @@ from modules.gen_audio import (
 )
 from modules.gen_image import read_prompts, generate_images_from_prompts
 from video_creation.create_video import create_video, log_time_taken
+from helpers.aws_uploader import upload_to_s3
 
 
+# 1.
+async def generate_images(style: str):
+    """Generate images from prompts"""
+    start_time = time.time()
+
+    try:
+        prompts = await read_prompts("prompts/img_gen_prompts.txt")
+        if not prompts:
+            raise ValueError("No image prompts found in file")
+
+        await generate_images_from_prompts(prompts, style)
+        log_time_taken("Image generation", start_time, time.time())
+
+    except Exception as e:
+        logging.error(f"Error in image generation: {str(e)}")
+        raise
+
+
+# 2.
 async def generate_story_content(prompt: str, duration: int):
     """Generate subtitles and image prompts concurrently"""
     start_time = time.time()
@@ -27,6 +48,57 @@ async def generate_story_content(prompt: str, duration: int):
     log_time_taken("Story content generation", start_time, time.time())
 
 
+# 3.
+async def generate_video(
+    prompt: str,
+    duration: int,
+    style: str,
+    bgm_audio: str,
+    voice_character: str,
+    voice_files: Optional[List[str]] = None,
+) -> str:
+    """Main function to handle video generation process"""
+    total_start_time = time.time()
+    cloned_voice_id = None
+
+    try:
+        # 1. Generate story content
+        await generate_story_content(prompt, duration)
+
+        # 2. Generate audio and images concurrently
+        audio_task = process_voice(voice_character, voice_files)
+        images_task = generate_images(style)
+
+        # Wait for both tasks to complete
+        (audio_success, audio_path, cloned_voice_id), _ = await asyncio.gather(
+            audio_task, images_task
+        )
+
+        if not audio_success:
+            raise Exception(f"Audio generation failed: {audio_path}")
+
+        # 3. Create final video
+        start_time = time.time()
+        await create_video(output_video_duration=duration, bgm_audio=bgm_audio)
+        log_time_taken("Video creation", start_time, time.time())
+
+        # Log total time taken
+        log_time_taken("Total video generation", total_start_time, time.time())
+
+    except Exception as e:
+        logging.error(f"Error in video generation: {str(e)}", exc_info=True)
+        raise
+    finally:
+        # Always clean up cloned voice if it exists
+        if cloned_voice_id:
+            logging.info(f"Cleaning up cloned voice: {cloned_voice_id}")
+            if delete_cloned_voice(cloned_voice_id):
+                logging.info("Successfully deleted cloned voice")
+            else:
+                logging.error("Failed to delete cloned voice")
+
+
+# 4.
 async def process_voice(
     voice_character: str, voice_samples: Optional[List[str]] = None
 ) -> Tuple[bool, str, Optional[str]]:
@@ -80,94 +152,108 @@ async def process_voice(
         raise
 
 
-async def generate_images(style: str):
-    """Generate images from prompts"""
-    start_time = time.time()
-
-    try:
-        prompts = await read_prompts("prompts/img_gen_prompts.txt")
-        if not prompts:
-            raise ValueError("No image prompts found in file")
-
-        await generate_images_from_prompts(prompts, style)
-        log_time_taken("Image generation", start_time, time.time())
-
-    except Exception as e:
-        logging.error(f"Error in image generation: {str(e)}")
-        raise
-
-
-async def generate_video(
-    prompt: str,
-    duration: int,
-    style: str,
-    voice_character: str,
-    voice_files: Optional[List[str]] = None,
-) -> str:
-    """Main function to handle video generation process"""
-    total_start_time = time.time()
-    cloned_voice_id = None
-
-    try:
-        # 1. Generate story content
-        await generate_story_content(prompt, duration)
-
-        # 2. Generate audio and images concurrently
-        audio_task = process_voice(voice_character, voice_files)
-        images_task = generate_images(style)
-
-        # Wait for both tasks to complete
-        (audio_success, audio_path, cloned_voice_id), _ = await asyncio.gather(
-            audio_task, images_task
-        )
-
-        if not audio_success:
-            raise Exception(f"Audio generation failed: {audio_path}")
-
-        # 3. Create final video
-        start_time = time.time()
-        video_path = await create_video(output_video_duration=duration)
-        log_time_taken("Video creation", start_time, time.time())
-
-        # Log total time taken
-        log_time_taken("Total video generation", total_start_time, time.time())
-
-        return video_path
-
-    except Exception as e:
-        logging.error(f"Error in video generation: {str(e)}", exc_info=True)
-        raise
-    finally:
-        # Always clean up cloned voice if it exists
-        if cloned_voice_id:
-            logging.info(f"Cleaning up cloned voice: {cloned_voice_id}")
-            if delete_cloned_voice(cloned_voice_id):
-                logging.info("Successfully deleted cloned voice")
-            else:
-                logging.error("Failed to delete cloned voice")
-
-
 # FastAPI integration
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
+from pydub import AudioSegment
+import logging
+from pathlib import Path
+from pydantic import BaseModel
+from typing import Annotated
+
+from modules.gen_audio import DEFAULT_VOICES
 
 app = FastAPI()
+
+VALID_DURATIONS = {45, 60, 75}
+VALID_STYLES = {"anime", "realistic", "fantasy", "cyberpunk", "ink"}
+MAX_VOICE_FILE_DURATION = 120  # seconds
+
+origins = [
+    "http://localhost:*",
+    "http://localhost:8080",
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
 async def health_check():
-    return {"message":"health check endpoint"}
+    return {"message": "health check endpoint"}
+
+
+def get_audio_duration(file_path: str) -> float:
+    """Returns the duration of an audio file in seconds."""
+    try:
+        audio = AudioSegment.from_file(file_path)
+        return audio.duration_seconds
+    except Exception:
+        raise HTTPException(
+            status_code=400, detail="Invalid audio file format or corrupted file."
+        )
+
+
+class FormData(BaseModel):
+    prompt: str  # fun fact , history video
+    duration: str  # frontend : take int
+    aspect_ratio: str
+    language: str
+    style: str
+    voice_character: str = ""
+    bgm_audio: str = ""  # add bgm option (optional)
+    voice_files: List[UploadFile] = File(None)
+
 
 @app.post("/generate-video")
-async def handle_video_request(
-    prompt: str, # fun fact , history video
-    duration: int,
-    style: str, 
-    bgm_audio: str,# add bgm option (optional)
-    voice_character: str,
-    voice_files: List[UploadFile] = File(None)
-):
+async def handle_video_request(data: Annotated[FormData, Form()]):
+    # Process the incoming form data
+    print(f"Prompt: {data.prompt}")
+    print(f"Duration: {data.duration}")
+    print(f"Aspect Ratio: {data.aspect_ratio}")
+    print(f"Language: {data.language}")
+    print(f"Style: {data.style}")
+    print(f"Voice Character: {data.voice_character}")
+    print(f"BGM Audio: {data.bgm_audio}")
+    print(f"Uploaded Files: {data.voice_files}")
+
+    prompt = data.prompt
+    duration = int(data.duration)
+    aspect_ratio = str(data.aspect_ratio)
+    bgm_audio = data.bgm_audio
+    language = data.language
+    style = data.style
+    voice_character = data.voice_character
+    data.bgm_audio = data.bgm_audio
+    voice_files = data.voice_files
+
+    # Parameter validation
+    if int(duration) not in VALID_DURATIONS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid duration. Allowed values are {VALID_DURATIONS}.",
+        )
+
+    if style not in VALID_STYLES:
+        raise HTTPException(
+            status_code=400, detail=f"Invalid style. Allowed styles are {VALID_STYLES}."
+        )
+
+    if voice_character != "" and voice_character not in DEFAULT_VOICES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid voice. Allowed voices are {DEFAULT_VOICES.keys()}.",
+        )
+    # # TODO: check bgm voices
+
     uploaded_files = []
     try:
         # Handle voice files if provided
@@ -178,41 +264,52 @@ async def handle_video_request(
 
             # Save all uploaded files
             uploaded_files = []
-            for voice_file in voice_files:
-                file_path = str(uploads_dir / voice_file.filename)
+            for i, voice_file in enumerate(voice_files, start=1):
+                file_path = str(uploads_dir / f"sample_{i}.mp3")
                 with open(file_path, "wb") as f:
                     f.write(await voice_file.read())
                 uploaded_files.append(file_path)
 
+                # Check audio duration
+                audio_duration = get_audio_duration(file_path)
+                if audio_duration > MAX_VOICE_FILE_DURATION:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Each voice file must be under {MAX_VOICE_FILE_DURATION} seconds.",
+                    )
+
         # Generate video
-        video_path = await generate_video(
+        await generate_video(
             prompt=prompt,
-            duration=duration,
+            duration=int(duration),
             style=style,
+            bgm_audio=bgm_audio,
             voice_character=voice_character,
-            voice_files=uploaded_files if uploaded_files else None
+            voice_files=uploaded_files if uploaded_files else None,
         )
 
         # TODO : upload video to s3
+        if bgm_audio != "":
+            video_path = "video_creation/assets/videos/final_output_video_bgm.mp4"
+        else:
+            video_path = "video_creation/assets/videos/final_output_video_subtitles.mp4"
+        s3_url = upload_to_s3(file_path=video_path, duration=duration)
 
-        return JSONResponse({
-            "success": True,
-            "video_path": video_path # aws s3 link
-        })
+        return JSONResponse({"success": True, "video_path": s3_url})  # aws s3 link
 
     except Exception as e:
         logging.error(f"Error processing request: {str(e)}")
         return JSONResponse(
-            status_code=500,
-            content={"success": False, "error": str(e)}
+            status_code=500, content={"success": False, "error": str(e)}
         )
-    finally:
-        # Clean up uploaded files
-        for file_path in uploaded_files:
-            try:
-                Path(file_path).unlink()
-            except Exception as e:
-                logging.error(f"Error deleting uploaded file {file_path}: {str(e)}")
+    # finally:
+    #     # Clean up uploaded files
+    #     for file_path in uploaded_files:
+    #         try:
+    #             Path(file_path).unlink()
+    #         except Exception as e:
+    #             logging.error(f"Error deleting uploaded file {file_path}: {str(e)}")
+
 
 # For testing
 if __name__ == "__main__":

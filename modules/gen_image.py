@@ -32,13 +32,6 @@ async def generate_image_request(session, prompt, style, i):
         "realistic": ", hyper-realistic portrait, sharp focus, cinematic composition, dramatic lighting, and high-level photographic details. Enhance with 'photograph' or 'hyperrealism'",
         "fantasy": ", ethereal fantasy portrait, magical atmosphere, intricate details, dreamlike scenery, and glowing elements. Enhance with 'fantasy-art' or 'dark-fantasy'",
         "cyberpunk": ", futuristic cyberpunk portrait, neon lights, gritty urban background, high-tech elements, and edgy styling. Enhance with 'futuristic-cyberpunk-cityscape'",
-        "oil_painting": ", classical oil painting style, rich textured brushstrokes, deep colors, traditional composition, and a refined painterly look. Enhance with 'oil-painting' or 'classicism-art'",
-        "surrealism": ", surrealistic portrait, dreamlike scenarios, imaginative, abstract and bizarre combinations of elements, with a playful artistic feel. Enhance with 'surrealist' or 'dmt-art'",
-        "steampunk": ", retro-futuristic steampunk portrait, industrial designs, mechanical elements, and Victorian-inspired clothing with brass, gears, and steam-powered machines. Enhance with 'steampunk' or 'futuristic-steampunk'",
-        "minimalism": ", minimalist portrait, clean lines, simple and elegant design, subtle colors, and minimalistic composition. Enhance with 'minimalist' or 'minimalism'",
-        "watercolor": ", soft watercolor portrait, delicate brushstrokes, flowing colors, dreamy textures, and an artistic yet whimsical feel. Enhance with 'watercolor'",
-        "cinematic": ", epic cinematic portrait, dynamic composition, dramatic lighting, and a film-like atmosphere with highly detailed realism. Enhance with 'cinematic'",
-        "sketch": ", hand-drawn black and white pencil sketch portrait, featuring soft, loose lines and shading, on textured white paper. Emphasizes expressive features and a minimalist design, capturing the essence with an artistic touch. Enhance with 'pencil-sketch-drawing'",
         "ink":"Intricate ink portrait, featuring bold, precise lines, and sharp contrast between light and shadow. The artwork has a strictly monochromatic aesthetic, with detailed cross-hatching and stippling to create depth and texture. The style emphasizes expressive features with a clean, minimalist approach. Enhance with 'ink-illustration'."
     }
 
@@ -47,13 +40,6 @@ async def generate_image_request(session, prompt, style, i):
         "realistic": "photograph",  # or "hyperrealism"
         "fantasy": "fantasy-art",  # or "dark-fantasy"
         "cyberpunk": "futuristic-cyberpunk-cityscape",
-        "oil_painting": "oil-painting",  # or "classicism-art"
-        "surrealism": "surrealist",  # or "dmt-art"
-        "steampunk": "steampunk",  # or "futuristic-steampunk"
-        "minimalism": "minimalist",  # or "minimalism"
-        "watercolor": "watercolor",
-        "cinematic": "cinematic",
-        "sketch": "pencil-sketch-drawing",  # Sketch enhancement option
         "ink":"japanese-ink-drawing"
     }
 

@@ -74,7 +74,7 @@ def delete_cloned_voice(voice_id: str) -> bool:
 def generate_audio(
     character: str,
     voice_samples: Optional[List[str]] = None,
-    output_path: str = "assets/audio/combined_story_audio.wav"
+    output_path: str = "assets/audio/combined_story_audio.wav",
 ) -> Tuple[bool, str]:
     """
     Generate audio using either a default voice or a cloned voice.
