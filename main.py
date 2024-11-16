@@ -15,10 +15,11 @@ from modules.gen_audio import (
 from modules.gen_image import read_prompts, generate_images_from_prompts
 from video_creation.create_video import create_video, log_time_taken
 from helpers.aws_uploader import upload_to_s3
+from helpers.clean_video_folder import clean_video_folder
 
 
 # 1.
-async def generate_images(style: str):
+async def generate_images(style: str, aspect_ratio):
     """Generate images from prompts"""
     start_time = time.time()
 
@@ -27,7 +28,7 @@ async def generate_images(style: str):
         if not prompts:
             raise ValueError("No image prompts found in file")
 
-        await generate_images_from_prompts(prompts, style)
+        await generate_images_from_prompts(prompts, style, aspect_ratio)
         log_time_taken("Image generation", start_time, time.time())
 
     except Exception as e:
@@ -52,11 +53,12 @@ async def generate_story_content(prompt: str, duration: int):
 async def generate_video(
     prompt: str,
     duration: int,
+    aspect_ratio:str,
     style: str,
     bgm_audio: str,
-    voice_character: str,
+    voice_character: str = "alice",
     voice_files: Optional[List[str]] = None,
-) -> str:
+):
     """Main function to handle video generation process"""
     total_start_time = time.time()
     cloned_voice_id = None
@@ -67,7 +69,7 @@ async def generate_video(
 
         # 2. Generate audio and images concurrently
         audio_task = process_voice(voice_character, voice_files)
-        images_task = generate_images(style)
+        images_task = generate_images(style, aspect_ratio)
 
         # Wait for both tasks to complete
         (audio_success, audio_path, cloned_voice_id), _ = await asyncio.gather(
@@ -79,7 +81,7 @@ async def generate_video(
 
         # 3. Create final video
         start_time = time.time()
-        await create_video(output_video_duration=duration, bgm_audio=bgm_audio)
+        await create_video(output_video_duration=duration, bgm_audio=bgm_audio,aspect_ratio=aspect_ratio)
         log_time_taken("Video creation", start_time, time.time())
 
         # Log total time taken
@@ -134,7 +136,7 @@ async def process_voice(
             # Use default voice
             success, result = generate_audio(
                 character=voice_character,
-                output_path="assets/audio/combined_story_audio.wav",
+                output_path="video_creation/assets/audio/combined_story_audio.wav",
             )
 
         log_time_taken("Audio generation", start_time, time.time())
@@ -170,6 +172,7 @@ app = FastAPI()
 VALID_DURATIONS = {45, 60, 75}
 VALID_STYLES = {"anime", "realistic", "fantasy", "cyberpunk", "ink"}
 MAX_VOICE_FILE_DURATION = 120  # seconds
+VALID_ASPECT_RATIOS = {"9:16","16:9","1:1"}
 
 origins = [
     "http://localhost:*",
@@ -215,16 +218,6 @@ class FormData(BaseModel):
 
 @app.post("/generate-video")
 async def handle_video_request(data: Annotated[FormData, Form()]):
-    # Process the incoming form data
-    print(f"Prompt: {data.prompt}")
-    print(f"Duration: {data.duration}")
-    print(f"Aspect Ratio: {data.aspect_ratio}")
-    print(f"Language: {data.language}")
-    print(f"Style: {data.style}")
-    print(f"Voice Character: {data.voice_character}")
-    print(f"BGM Audio: {data.bgm_audio}")
-    print(f"Uploaded Files: {data.voice_files}")
-
     prompt = data.prompt
     duration = int(data.duration)
     aspect_ratio = str(data.aspect_ratio)
@@ -232,7 +225,6 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
     language = data.language
     style = data.style
     voice_character = data.voice_character
-    data.bgm_audio = data.bgm_audio
     voice_files = data.voice_files
 
     # Parameter validation
@@ -242,12 +234,20 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
             detail=f"Invalid duration. Allowed values are {VALID_DURATIONS}.",
         )
 
+    # set img aspect ratio
+    if aspect_ratio not in VALID_ASPECT_RATIOS:
+        raise HTTPException(
+            status_code=400, detail=f"Invalid aspect ratio: {aspect_ratio}"
+        )
+    aspect_ratio = data.aspect_ratio
+    print('\n',aspect_ratio,'\n')
+
     if style not in VALID_STYLES:
         raise HTTPException(
             status_code=400, detail=f"Invalid style. Allowed styles are {VALID_STYLES}."
         )
 
-    if voice_character != "" and voice_character not in DEFAULT_VOICES:
+    if voice_character not in DEFAULT_VOICES:
         raise HTTPException(
             status_code=400,
             detail=f"Invalid voice. Allowed voices are {DEFAULT_VOICES.keys()}.",
@@ -283,17 +283,22 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
             prompt=prompt,
             duration=int(duration),
             style=style,
+            aspect_ratio=aspect_ratio, # video aspect ratio
             bgm_audio=bgm_audio,
             voice_character=voice_character,
             voice_files=uploaded_files if uploaded_files else None,
         )
 
-        # TODO : upload video to s3
+        # upload video to s3
         if bgm_audio != "":
             video_path = "video_creation/assets/videos/final_output_video_bgm.mp4"
         else:
             video_path = "video_creation/assets/videos/final_output_video_subtitles.mp4"
         s3_url = upload_to_s3(file_path=video_path, duration=duration)
+
+        # delete all videos after s3 upload
+        # clean_video_folder()
+
 
         return JSONResponse({"success": True, "video_path": s3_url})  # aws s3 link
 
@@ -302,41 +307,10 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
         return JSONResponse(
             status_code=500, content={"success": False, "error": str(e)}
         )
-    # finally:
-    #     # Clean up uploaded files
-    #     for file_path in uploaded_files:
-    #         try:
-    #             Path(file_path).unlink()
-    #         except Exception as e:
-    #             logging.error(f"Error deleting uploaded file {file_path}: {str(e)}")
-
-
-# For testing
-if __name__ == "__main__":
-
-    async def test_video_generation():
-        try:
-            # # Test with default voice
-            # video_path = await generate_video(
-            #     prompt="Inter galactic war in the universe near black hole with spaceships.",
-            #     duration=45,
-            #     style="realistic",
-            #     voice_character="allison"
-            # )
-            # logging.info(f"Video generated successfully at: {video_path}")
-
-            # Test with voice cloning
-            sample_files = ["uploads/b1.mpeg", "uploads/b2.mpeg", "uploads/b3.mpeg"]
-            video_path = await generate_video(
-                prompt="Star wars in universe",
-                duration=45,
-                style="anime",
-                voice_character="clone",
-                voice_files=sample_files,
-            )
-            logging.info(f"Video generated with cloned voice at: {video_path}")
-
-        except Exception as e:
-            logging.error(f"Test failed: {str(e)}")
-
-    asyncio.run(test_video_generation())
+    finally:
+        # Clean up uploaded files
+        for file_path in uploaded_files:
+            try:
+                Path(file_path).unlink()
+            except Exception as e:
+                logging.error(f"Error deleting uploaded file {file_path}: {str(e)}")

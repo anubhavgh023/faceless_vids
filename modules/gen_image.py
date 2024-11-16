@@ -14,6 +14,12 @@ MAX_RETRIES = 3  # Max number of retries for failed requests
 FETCH_MAX_ATTEMPTS = 7  # Max number of attempts for fetching images
 FETCH_DELAY = 10  # Delay between fetch attempts in seconds
 
+VALID_IMAGE_ASPECT_RATIOS = {
+    "9:16": {"height": 1024, "width": 576},  # Portrait
+    "16:9": {"height": 576, "width": 1024},  # Landscape
+    "1:1": {"height": 1024, "width": 1024},  # Square
+}
+
 
 async def read_prompts(file_path: str):
     """Reads prompts from a file and returns a list of prompts."""
@@ -25,7 +31,7 @@ async def read_prompts(file_path: str):
         return []
 
 
-async def generate_image_request(session, prompt, style, i):
+async def generate_image_request(session, prompt, style, i,aspect_ratio):
     """Sends a single image generation request for the given prompt with retry logic."""
     style_prompts = {
         "anime": ", vibrant modern anime portrait, expressive characters, bold outlines, detailed features, vivid colors, and energetic composition. Enhance with 'anime'",
@@ -47,12 +53,15 @@ async def generate_image_request(session, prompt, style, i):
     enhanced_prompt = f"((masterpiece, best quality, highly detailed, sharp focus)), (portrait:1.4), {prompt}{style_prompts.get(style,'')}"
     negative_prompt = "((blurry, low quality, low resolution, disfigured, deformed)), (extra limbs, extra fingers, extra arms, extra legs), bad anatomy, bad proportions, (unrealistic proportions), watermark, signature, cropped image"
 
+    width = VALID_IMAGE_ASPECT_RATIOS[aspect_ratio]['width']
+    height = VALID_IMAGE_ASPECT_RATIOS[aspect_ratio]['height']
+
     payload = {
         "key": MODELSLAB_API_KEY,
         "prompt": enhanced_prompt,
         "negative_prompt": negative_prompt,
-        "width": "576",
-        "height": "1024",  # Portrait size
+        "width": f"{width}",
+        "height": f"{height}",
         "samples": 1,
         "safety_checker": False,
         "enhance_prompt": True,
@@ -123,12 +132,12 @@ async def fetch_and_save_image(session, image_id, i):
     print(f"Failed to fetch image {i} after {FETCH_MAX_ATTEMPTS} attempts")
 
 
-async def generate_images_from_prompts(prompts, style):
+async def generate_images_from_prompts(prompts, style,aspect_ratio):
     """Generates images based on the provided prompts using the ModelsLab API."""
     async with aiohttp.ClientSession() as session:
         # Create tasks for all prompts at once
         generate_tasks = [
-            generate_image_request(session, prompt, style, idx + 1)
+            generate_image_request(session, prompt, style, idx + 1,aspect_ratio)
             for idx, prompt in enumerate(prompts)
         ]
 

@@ -62,7 +62,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))  # Using OpenAI client
 
 
 # Generate a video from a given image.
-def process_image_to_video(image_path, index, aspect_ratio="720:1280"):
+def process_image_to_video(image_path, index, aspect_ratio):
     start_time = time.time()  # Start time
     output_video = os.path.join(videos_dir, f"story_video_{index + 1}.mp4")
     make_video_from_image(image_path, index, output_video, aspect_ratio)
@@ -88,7 +88,7 @@ def generate_subtitles_from_audio():
 
 
 # Main function to create the video from images, audio, and subtitles.
-async def create_video(output_video_duration: int, bgm_audio: str):
+async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:str):
     # Ensure directories exist
     os.makedirs(images_dir, exist_ok=True)
     os.makedirs(audio_dir, exist_ok=True)
@@ -112,7 +112,7 @@ async def create_video(output_video_duration: int, bgm_audio: str):
     start_time_parallel = time.time()
     with ProcessPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
         video_futures = [
-            executor.submit(process_image_to_video, img, i)
+            executor.submit(process_image_to_video, img, i,aspect_ratio)
             for i, img in enumerate(images)
         ]
         # audio_future = executor.submit(process_audio, audios)

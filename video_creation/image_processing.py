@@ -3,7 +3,21 @@ import subprocess
 import random
 import shlex
 
-def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio: str):
+VALID_VIDEO_ASPECT_RATIOS = {
+    "9:16": {"width": 720, "height": 1280},  # Portrait
+    "16:9": {"width": 1280, "height": 720},  # Landscape
+    "1:1": {"width": 720, "height": 720},    # Square
+}
+
+def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio):
+    #default width & height 
+    width = 720
+    height = 1280
+    
+    # set video height & width
+    width = VALID_VIDEO_ASPECT_RATIOS[aspect_ratio]['width']
+    height = VALID_VIDEO_ASPECT_RATIOS[aspect_ratio]['height']
+    
     try:
         video_duration = 6  # 6 seconds each video
         zoom_speed = 0.003  # Slow zoom speed
@@ -44,7 +58,7 @@ def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio: s
         # )
         ffmpeg_command = (
             f"ffmpeg -y -loop 1 -i {image} "
-            f'-vf "{zoom_filter},scale={aspect_ratio},format=yuv420p" '
+            f'-vf "{zoom_filter},scale="{width}:{height}",format=yuv420p" '
             f"-t {video_duration} -c:v libx264 -crf 24 -pix_fmt yuv420p -r 30 {output_video}"
         )
 

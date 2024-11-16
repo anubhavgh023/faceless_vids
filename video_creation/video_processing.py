@@ -31,7 +31,7 @@ def add_subtitles_with_audio(input_video, subtitle_file, audio_file, output_vide
 def add_bg_music(final_video, bg_music_path, output_video):
     ffmpeg_command = (
         f"ffmpeg -i {final_video} -i {bg_music_path} "
-        f'-filter_complex "[1:a]aloop=loop=-1:size=2e+09,volume=0.02[a1];'
+        f'-filter_complex "[1:a]aloop=loop=-1:size=2e+09,volume=0.04[a1];'
         f'[0:a]volume=1.0[a0];[a0][a1]amix=inputs=2:duration=first" '
         f"-c:v copy -c:a aac -b:a 192k {output_video}"
     )
