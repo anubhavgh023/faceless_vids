@@ -1,6 +1,9 @@
 import os
 import subprocess
+import logging
 
+
+logger = logging.getLogger()
 
 # Function to add subtitles with merged audio to the video
 def add_subtitles_with_audio(input_video, subtitle_file, audio_file, output_video):
@@ -22,9 +25,9 @@ def add_subtitles_with_audio(input_video, subtitle_file, audio_file, output_vide
 
     try:
         subprocess.run(ffmpeg_command, shell=True, check=True)
-        print(f"Video with subtitles and audio saved as '{output_video}'")
+        logger.info(f"Video with subtitles and audio saved as '{output_video}'")
     except subprocess.CalledProcessError as e:
-        print(f"Error adding subtitles to video '{input_video}': {e}")
+        logger.error(f"Error adding subtitles to video '{input_video}': {e}")
 
 
 # Function to add background music
@@ -38,6 +41,6 @@ def add_bg_music(final_video, bg_music_path, output_video):
     
     try:
         subprocess.run(ffmpeg_command, shell=True, check=True)
-        print(f"Video with background music saved as '{output_video}'")
+        logger.info(f"Video with background music saved as '{output_video}'")
     except Exception as e:
-        print(f"Error adding background music: {e}")
+        logger.error(f"Error adding background music: {e}")

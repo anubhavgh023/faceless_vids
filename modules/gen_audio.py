@@ -6,9 +6,7 @@ import io
 import logging
 from typing import Optional, Dict, List, Tuple
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 # Load environment variables
 load_dotenv()
@@ -91,17 +89,7 @@ def generate_audio(
     voice_samples: Optional[List[str]] = None,
     output_path: str = "assets/audio/combined_story_audio.wav",
 ) -> Tuple[bool, str]:
-    """
-    Generate audio using either a default voice or a cloned voice.
-    
-    Args:
-        character (str): Name of default voice OR "clone" for voice cloning
-        voice_samples (Optional[List[str]]): List of paths to voice samples if cloning
-        output_path (str): Path for the output audio file
-    
-    Returns:
-        Tuple[bool, str]: (Success status, Output path or error message)
-    """
+
     try:
         # Read all prompts
         with open("prompts/subtitle_gen_prompts.txt", "r") as f:

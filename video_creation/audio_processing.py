@@ -1,6 +1,8 @@
 import subprocess
 import os
+import logging
 
+logger = logging.getLogger()
 
 # Function to merge audios
 def merge_audios(input_audios, output_audio):
@@ -15,9 +17,9 @@ def merge_audios(input_audios, output_audio):
             check=True,
         )
         os.remove("audios_list.txt")
-        print(f"Merged audio saved as '{output_audio}'")
+        logger.info(f"Merged audio saved as '{output_audio}'")
     except Exception as e:
-        print(f"Error merging audios: {e}")
+        logger.error(f"Error merging audios: {e}")
 
 # This function generates timings for pairs of words
 def generate_word_timings(captions):

@@ -6,25 +6,27 @@ from dotenv import load_dotenv
 import concurrent.futures
 import asyncio
 import re
+import logging
 
 load_dotenv()
 
 client = OpenAI()
 client.api_key = os.getenv("OPENAI_API_KEY")
 
+logger = logging.getLogger()
 
 # Generate story-prompts which are going be used as subtitles
 async def subtitle_generator_story(prompt: str, duration: int):
     try:
         # Define number of sentences based on duration
         if duration == 45:
-            num_of_sentences = 2 # TODO: change this to 10
+            num_of_sentences = 10
         elif duration == 60:
             num_of_sentences = 13
         elif duration == 75:
             num_of_sentences = 16
         else:
-            print("Invalid duration")
+            logger.info("Invalid duration")
             return
 
         # Request a full story with the required number of sentences
@@ -51,10 +53,10 @@ async def subtitle_generator_story(prompt: str, duration: int):
                 if sentence.strip():  # Skip empty sentences
                     f.write(sentence.strip() + ".\n")
 
-        print("Story successfully written to subtitle_gen_prompts.txt")
+        logger.info("Story successfully written to subtitle_gen_prompts.txt")
 
     except Exception as e:
-        print(f"Error: {e}")
+        logger.error(f"Error: {e}")
 
 
 # Generate story-prompts to which are going to be used to gen images
@@ -62,13 +64,13 @@ async def image_generator_story(prompt: str, duration: int):
     try:
         # Define number of sentences based on duration
         if duration == 45:
-            num_of_sentences = 2 # TODO: change this to 10
+            num_of_sentences = 10
         elif duration == 60:
             num_of_sentences = 13
         elif duration == 75:
             num_of_sentences = 16
         else:
-            print("Invalid duration")
+            logger.error("Invalid duration")
             return
 
         # Request a full story with the required number of sentences
@@ -113,7 +115,7 @@ async def image_generator_story(prompt: str, duration: int):
             for i in range(min(num_of_sentences, len(sentences))):
                 f.write(sentences[i] + ".\n")
 
-        print("Story successfully written to img_gen_prompts.txt")
+        logger.info("Story successfully written to img_gen_prompts.txt")
 
     except Exception as e:
-        print(f"Error: {e}")
+        logger.error(f"Error: {e}")

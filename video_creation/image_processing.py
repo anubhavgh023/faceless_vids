@@ -2,12 +2,15 @@ import os
 import subprocess
 import random
 import shlex
+import logging
 
 VALID_VIDEO_ASPECT_RATIOS = {
     "9:16": {"width": 720, "height": 1280},  # Portrait
     "16:9": {"width": 1280, "height": 720},  # Landscape
     "1:1": {"width": 720, "height": 720},    # Square
 }
+
+logger = logging.getLogger()
 
 def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio):
     #default width & height 
@@ -64,9 +67,9 @@ def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio):
 
         subprocess.run(ffmpeg_command, shell=True, check=True)
 
-        print(f"Video from image saved as '{output_video}'")
+        logger.info(f"Video from image saved as '{output_video}'")
     except Exception as e:
-        print(f"Error generating video from image '{image}': {e}")
+        logger.error(f"Error generating video from image '{image}': {e}")
 
 # working
 def merge_videos(videos, output_file):
@@ -98,18 +101,15 @@ def merge_videos(videos, output_file):
             f'-map "[v0{len(videos)-1}]" -c:v libx264 -crf 24 {output_file}'
         )
 
-        # Print the command for debugging
-        print(f"FFmpeg command: {ffmpeg_command}")
-
         # Execute the ffmpeg command
         subprocess.run(shlex.split(ffmpeg_command), check=True)
 
-        print(f"Final video saved as '{output_file}'")
+        logger.info(f"Final video saved as '{output_file}'")
     except subprocess.CalledProcessError as e:
-        print(f"Error concatenating videos: {e}")
-        print(f"FFmpeg output: {e.output}")
+        logger.error(f"Error concatenating videos: {e}")
+        logger.error(f"FFmpeg output: {e.output}")
     except Exception as e:
-        print(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}")
 
 def add_particle_effect(
     input_video,
@@ -148,17 +148,13 @@ def add_particle_effect(
             f'-frame-parallel 1 -pix_fmt yuv420p '
             f'-t {output_video_duration} {output_video}'
         )
-        
-
-        # Print the command for debugging
-        print(f"FFmpeg command: {ffmpeg_command}")
 
         # Execute the ffmpeg command
         subprocess.run(shlex.split(ffmpeg_command), check=True)
 
-        print(f"Video with particle effect saved as '{output_video}'")
+        logger.info(f"Video with particle effect saved as '{output_video}'")
     except subprocess.CalledProcessError as e:
-        print(f"Error adding particle effect: {e}")
-        print(f"FFmpeg output: {e.output}")
+        logger.error(f"Error adding particle effect: {e}")
+        logger.error(f"FFmpeg output: {e.output}")
     except Exception as e:
-        print(f"Unexpected error: {e}")
+        logger.error(f"Unexpected error: {e}")

@@ -4,8 +4,11 @@ import os
 from dotenv import load_dotenv
 import datetime
 import pysubs2
+import logging
 
 load_dotenv()
+
+logger = logging.getLogger()
 
 # client = OpenAI()
 # client.api_key = os.getenv("OPENAI_API_KEY")
@@ -55,10 +58,10 @@ def generate_subtitle_file(transcript_words, output_file):
                     if i < len(transcript_words) - 1:
                         line_start = transcript_words[i + 1].start
 
-        print(f"SRT file has been generated: {output_file}")
+        logger.info(f"SRT file has been generated: {output_file}")
 
     except Exception as e:
-        print(f"Error generating subtitle file: {e}")
+        logger.error(f"Error generating subtitle file: {e}")
 
 def modify_subtitle_style(srt_file, ass_file):
     # Load the SRT file
@@ -110,4 +113,4 @@ def modify_subtitle_style(srt_file, ass_file):
     # Save the result to ASS format
     subs.save(ass_file)
 
-    print(f"str file modified: {ass_file}")
+    logger.info(f"str file modified: {ass_file}")

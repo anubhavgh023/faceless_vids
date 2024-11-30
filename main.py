@@ -17,6 +17,23 @@ from video_creation.create_video import create_video, log_time_taken
 from helpers.aws_uploader import upload_to_s3
 from helpers.clean_video_folder import clean_video_folder
 
+# Set up logging configuration
+logging.basicConfig(
+    filename="logs/application.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
+logger = logging.getLogger()
+
+
+# Function to log timing information
+def log_time_taken(function_name, start_time, end_time):
+    time_taken = end_time - start_time
+    log_message = f"{function_name}: {time_taken:.2f} seconds"
+    logger.info(log_message)
+
 
 # 1.
 async def generate_images(style: str, aspect_ratio):
@@ -32,7 +49,7 @@ async def generate_images(style: str, aspect_ratio):
         log_time_taken("Image generation", start_time, time.time())
 
     except Exception as e:
-        logging.error(f"Error in image generation: {str(e)}")
+        logger.error(f"Error in image generation: {str(e)}")
         raise
 
 
@@ -53,7 +70,7 @@ async def generate_story_content(prompt: str, duration: int):
 async def generate_video(
     prompt: str,
     duration: int,
-    aspect_ratio:str,
+    aspect_ratio: str,
     style: str,
     bgm_audio: str,
     voice_character: str = "alice",
@@ -81,23 +98,27 @@ async def generate_video(
 
         # 3. Create final video
         start_time = time.time()
-        await create_video(output_video_duration=duration, bgm_audio=bgm_audio,aspect_ratio=aspect_ratio)
+        await create_video(
+            output_video_duration=duration,
+            bgm_audio=bgm_audio,
+            aspect_ratio=aspect_ratio,
+        )
         log_time_taken("Video creation", start_time, time.time())
 
         # Log total time taken
         log_time_taken("Total video generation", total_start_time, time.time())
 
     except Exception as e:
-        logging.error(f"Error in video generation: {str(e)}", exc_info=True)
+        logger.error(f"Error in video generation: {str(e)}", exc_info=True)
         raise
     finally:
         # Always clean up cloned voice if it exists
         if cloned_voice_id:
-            logging.info(f"Cleaning up cloned voice: {cloned_voice_id}")
+            logger.info(f"Cleaning up cloned voice: {cloned_voice_id}")
             if delete_cloned_voice(cloned_voice_id):
-                logging.info("Successfully deleted cloned voice")
+                logger.info("Successfully deleted cloned voice")
             else:
-                logging.error("Failed to delete cloned voice")
+                logger.error("Failed to delete cloned voice")
 
 
 # 4.
@@ -120,7 +141,7 @@ async def process_voice(
             if not cloned_voice_id:
                 raise Exception("Voice cloning failed")
 
-            logging.info(f"Voice clone created with ID: {cloned_voice_id}")
+            logger.info(f"Voice clone created with ID: {cloned_voice_id}")
 
             # Use cloned voice for generation
             success, result = generate_audio(
@@ -147,7 +168,7 @@ async def process_voice(
         return success, result, cloned_voice_id
 
     except Exception as e:
-        logging.error(f"Error in audio generation: {str(e)}")
+        logger.error(f"Error in audio generation: {str(e)}")
         # Clean up cloned voice if there was an error
         if cloned_voice_id:
             delete_cloned_voice(cloned_voice_id)
@@ -160,7 +181,6 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from pydub import AudioSegment
-import logging
 from pathlib import Path
 from pydantic import BaseModel
 from typing import Annotated
@@ -170,9 +190,9 @@ from modules.gen_audio import DEFAULT_VOICES
 app = FastAPI()
 
 VALID_DURATIONS = {45, 60, 75}
-VALID_STYLES = {"anime", "realistic", "fantasy", "cyberpunk", "ink"}
+VALID_STYLES = {"anime", "realistic", "fantasy","watercolor", "cyberpunk", "ink","cartoon"}
 MAX_VOICE_FILE_DURATION = 120  # seconds
-VALID_ASPECT_RATIOS = {"9:16","16:9","1:1"}
+VALID_ASPECT_RATIOS = {"9:16", "16:9", "1:1"}
 
 origins = [
     "http://localhost:*",
@@ -218,6 +238,8 @@ class FormData(BaseModel):
 
 @app.post("/generate-video")
 async def handle_video_request(data: Annotated[FormData, Form()]):
+    start_time_main = time.time()  # Start time
+
     prompt = data.prompt
     duration = int(data.duration)
     aspect_ratio = str(data.aspect_ratio)
@@ -226,6 +248,15 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
     style = data.style
     voice_character = data.voice_character
     voice_files = data.voice_files
+
+    print(prompt)
+    print(duration)
+    print(aspect_ratio)
+    print(bgm_audio)
+    print(language)
+    print(style)
+    print(voice_character)
+    print(voice_files)
 
     # Parameter validation
     if int(duration) not in VALID_DURATIONS:
@@ -240,7 +271,6 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
             status_code=400, detail=f"Invalid aspect ratio: {aspect_ratio}"
         )
     aspect_ratio = data.aspect_ratio
-    print('\n',aspect_ratio,'\n')
 
     if style not in VALID_STYLES:
         raise HTTPException(
@@ -283,7 +313,7 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
             prompt=prompt,
             duration=int(duration),
             style=style,
-            aspect_ratio=aspect_ratio, # video aspect ratio
+            aspect_ratio=aspect_ratio,  # video aspect ratio
             bgm_audio=bgm_audio,
             voice_character=voice_character,
             voice_files=uploaded_files if uploaded_files else None,
@@ -295,15 +325,16 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
         else:
             video_path = "video_creation/assets/videos/final_output_video_subtitles.mp4"
         s3_url = upload_to_s3(file_path=video_path, duration=duration)
+        logger.info(f"S3 URL: {s3_url}")
 
         # delete all videos after s3 upload
-        # clean_video_folder()
-
+        clean_video_folder()
 
         return JSONResponse({"success": True, "video_path": s3_url})  # aws s3 link
 
     except Exception as e:
-        logging.error(f"Error processing request: {str(e)}")
+        logger.error(f"Error processing request: {str(e)}")
+
         return JSONResponse(
             status_code=500, content={"success": False, "error": str(e)}
         )
@@ -313,4 +344,6 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
             try:
                 Path(file_path).unlink()
             except Exception as e:
-                logging.error(f"Error deleting uploaded file {file_path}: {str(e)}")
+                logger.error(f"Error deleting uploaded file {file_path}: {str(e)}")
+        end_time_main = time.time()  # End time
+        log_time_taken("main app", start_time_main, end_time_main)

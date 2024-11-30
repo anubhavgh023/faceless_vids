@@ -27,20 +27,13 @@ from video_creation.subtitle_processing import (
 from video_creation.video_processing import add_subtitles_with_audio, add_bg_music
 
 
-# Set up logging configuration
-logging.basicConfig(
-    filename="logs/application.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
-
+logger = logging.getLogger()
 
 # Function to log timing information
 def log_time_taken(function_name, start_time, end_time):
     time_taken = end_time - start_time
     log_message = f"{function_name}: {time_taken:.2f} seconds"
-    logging.info(log_message)
+    logger.info(log_message)
 
 
 # Get the current script directory (create_video.py)
@@ -196,7 +189,7 @@ async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:st
         end_time_bg_music = time.time()
         log_time_taken("add_bg_music", start_time_bg_music, end_time_bg_music)
 
-    print("Video processing completed successfully!")
+    logger.info("Video processing completed successfully!")
 
 
 # Entry point for running this script directly
