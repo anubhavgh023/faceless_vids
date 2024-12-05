@@ -229,7 +229,6 @@ class FormData(BaseModel):
     prompt: str  # fun fact , history video
     duration: str  # frontend : take int
     aspect_ratio: str
-    language: str
     style: str
     voice_character: str = ""
     bgm_audio: str = ""  # add bgm option (optional)
@@ -237,23 +236,28 @@ class FormData(BaseModel):
 
 
 @app.post("/generate-video")
-async def handle_video_request(data: Annotated[FormData, Form()]):
-    start_time_main = time.time()  # Start time
-
-    prompt = data.prompt
-    duration = int(data.duration)
-    aspect_ratio = str(data.aspect_ratio)
-    bgm_audio = data.bgm_audio
-    language = data.language
-    style = data.style
-    voice_character = data.voice_character
-    voice_files = data.voice_files
+# async def handle_video_request(data: Annotated[FormData, Form()]):
+async def handle_video_request(
+    prompt: str = Form(...),
+    duration: int = Form(...),
+    aspect_ratio: str = Form(...),
+    style: str = Form(...),
+    voice_character: Optional[str] = Form(""),
+    bgm_audio: Optional[str] = Form(""),
+    voice_files: Optional[List[UploadFile]] = File(None),
+):
+    # prompt = data.prompt
+    # duration = int(data.duration)
+    # aspect_ratio = str(data.aspect_ratio)
+    # bgm_audio = data.bgm_audio
+    # style = data.style
+    # voice_character = data.voice_character
+    # voice_files = data.voice_files
 
     print(prompt)
     print(duration)
     print(aspect_ratio)
     print(bgm_audio)
-    print(language)
     print(style)
     print(voice_character)
     print(voice_files)
@@ -270,7 +274,7 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
         raise HTTPException(
             status_code=400, detail=f"Invalid aspect ratio: {aspect_ratio}"
         )
-    aspect_ratio = data.aspect_ratio
+    # aspect_ratio = data.aspect_ratio
 
     if style not in VALID_STYLES:
         raise HTTPException(
@@ -319,18 +323,18 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
             voice_files=uploaded_files if uploaded_files else None,
         )
 
-        # upload video to s3
-        if bgm_audio != "":
-            video_path = "video_creation/assets/videos/final_output_video_bgm.mp4"
-        else:
-            video_path = "video_creation/assets/videos/final_output_video_subtitles.mp4"
-        s3_url = upload_to_s3(file_path=video_path, duration=duration)
-        logger.info(f"S3 URL: {s3_url}")
+        # # upload video to s3
+        # if bgm_audio != "":
+        #     video_path = "video_creation/assets/videos/final_output_video_bgm.mp4"
+        # else:
+        #     video_path = "video_creation/assets/videos/final_output_video_subtitles.mp4"
+        # s3_url = upload_to_s3(file_path=video_path, duration=duration)
+        # logger.info(f"S3 URL: {s3_url}")
 
-        # delete all videos after s3 upload
-        clean_video_folder()
+        # # delete all videos after s3 upload
+        # clean_video_folder()
 
-        return JSONResponse({"success": True, "video_path": s3_url})  # aws s3 link
+        return JSONResponse({"success": True, "video_path": "s3_url"})  # aws s3 link
 
     except Exception as e:
         logger.error(f"Error processing request: {str(e)}")
@@ -345,5 +349,3 @@ async def handle_video_request(data: Annotated[FormData, Form()]):
                 Path(file_path).unlink()
             except Exception as e:
                 logger.error(f"Error deleting uploaded file {file_path}: {str(e)}")
-        end_time_main = time.time()  # End time
-        log_time_taken("main app", start_time_main, end_time_main)
