@@ -7,22 +7,23 @@ import logging
 VALID_VIDEO_ASPECT_RATIOS = {
     "9:16": {"width": 720, "height": 1280},  # Portrait
     "16:9": {"width": 1280, "height": 720},  # Landscape
-    "1:1": {"width": 720, "height": 720},    # Square
+    "1:1": {"width": 720, "height": 720},  # Square
 }
 
 logger = logging.getLogger()
 
+
 def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio):
-    #default width & height 
+    # default width & height
     width = 720
     height = 1280
-    
+
     # set video height & width
-    width = VALID_VIDEO_ASPECT_RATIOS[aspect_ratio]['width']
-    height = VALID_VIDEO_ASPECT_RATIOS[aspect_ratio]['height']
-    
+    width = VALID_VIDEO_ASPECT_RATIOS[aspect_ratio]["width"]
+    height = VALID_VIDEO_ASPECT_RATIOS[aspect_ratio]["height"]
+
     try:
-        video_duration = 6  # 6 seconds each video
+        video_duration = 6.5  # 6 seconds each video
         zoom_speed = 0.003  # Slow zoom speed
         max_zoom = 1.5
         zoom_area_list = [
@@ -53,15 +54,19 @@ def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio):
             f"zoompan=z='min(max(zoom,pzoom)+{zoom_speed},{max_zoom})':d={video_duration*25}:"
             f"x='{x}':y='{y}':s=576x1024:fps=25"
         )
-        # -- working --
-        # ffmpeg_command = (
-        #     f"ffmpeg -y -loop 1 -i {image} "
-        #     f'-vf "{zoom_filter},scale={aspect_ratio},format=yuv420p" '
-        #     f"-t {video_duration} -c:v libx264 -pix_fmt yuv420p -r 30 {output_video}"
-        # )
+        # Define the rotation effect filter
+        rotation_filter = (
+            "[0:v]rotate='(cos(t*6)*PI/40 + cos(t*5)*PI/70)*abs(cos(t*0.3))':c=black,"
+            f"scale={width}:{height},crop=576:1024:112:256,pad=576:1024:(ow-iw)/2:(oh-ih)/2"
+        )
+
+        # Randomly choose between zoom effect or rotation effect
+        chosen_filter = zoom_filter if random.choice([True, False]) else rotation_filter
+
+        # Final Command
         ffmpeg_command = (
             f"ffmpeg -y -loop 1 -i {image} "
-            f'-vf "{zoom_filter},scale="{width}:{height}",format=yuv420p" '
+            f'-vf "{chosen_filter},scale="{width}:{height}",format=yuv420p" '
             f"-t {video_duration} -c:v libx264 -crf 24 -pix_fmt yuv420p -r 30 {output_video}"
         )
 
@@ -71,6 +76,7 @@ def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio):
     except Exception as e:
         logger.error(f"Error generating video from image '{image}': {e}")
 
+
 # working
 def merge_videos(videos, output_file):
     try:
@@ -78,7 +84,8 @@ def merge_videos(videos, output_file):
         input_files = " ".join([f"-i {video}" for video in videos])
 
         # Unique transition options
-        transitions = ["fadeblack", "fadegrays", "fade"]
+        # transitions = ["fadeblack", "fadegrays", "fade"]
+        transitions = ["fadeblack", "fadegrays", "pixelize"]
 
         # Prepare filter complex string
         filter_complex = ""
@@ -111,6 +118,7 @@ def merge_videos(videos, output_file):
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
 
+
 def add_particle_effect(
     input_video,
     output_video_duration,
@@ -122,7 +130,7 @@ def add_particle_effect(
     overlay_x=0,
     overlay_y=0,
 ):
-    try:   
+    try:
         # Construct the colorkey filter
         colorkey_filter = (
             f"colorkey={colorkey_color}:{colorkey_similarity}:{colorkey_blend}"
@@ -144,9 +152,9 @@ def add_particle_effect(
             f"ffmpeg -i {input_video} -i {particle_video} "
             f'-filter_complex "{filter_complex}" '
             f'-map "[out]" -r 30 -c:v libx264 -crf 24 -preset ultrafast '
-            f'-threads {min(12, os.cpu_count())} '
-            f'-frame-parallel 1 -pix_fmt yuv420p '
-            f'-t {output_video_duration} {output_video}'
+            f"-threads {min(12, os.cpu_count())} "
+            f"-frame-parallel 1 -pix_fmt yuv420p "
+            f"-t {output_video_duration} {output_video}"
         )
 
         # Execute the ffmpeg command
