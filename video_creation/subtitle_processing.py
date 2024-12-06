@@ -70,7 +70,7 @@ def modify_subtitle_style(srt_file, ass_file):
     # Modify the default subtitle style
     for style in subs.styles.values():
         style.fontname = "Open Sans"
-        style.fontsize = 28
+        style.fontsize = 16
         style.bold = True
         style.primarycolor = pysubs2.Color(255, 255, 255)  # White
         style.backcolor = pysubs2.Color(0, 0, 0, 255)  # Black background
@@ -80,8 +80,8 @@ def modify_subtitle_style(srt_file, ass_file):
 
         # style.backcolor = pysubs2.Color(255,192,18,80) # yellow
         # style.backcolor = pysubs2.Color(0, 0, 139, 80)  # Dark Blue
-        style.backcolor = pysubs2.Color(75, 0, 130, 100)  # Dark Purple
-        style.shadow = 1
+        # style.backcolor = pysubs2.Color(75, 0, 130, 100)  # Dark Purple
+        # style.shadow = 1
 
     # Ensure subtitles and timings are handled properly
     for line in subs:
@@ -96,7 +96,8 @@ def modify_subtitle_style(srt_file, ass_file):
         for i, word in enumerate(words):
             end_time = current_time + word_duration
             # highlighted_text = f"{{\\c&HCC99FF&}}{word}{{\\c&HFFFFFF&}}" # purple/white
-            highlighted_text = f"{{\\c&H00D7FF&}}{word}{{\\c&HFFFFFF&}}"  # gold/white
+            # highlighted_text = f"{{\\c&H00D7FF&}}{word}{{\\c&HFFFFFF&}}"  # gold/white
+            highlighted_text = f"{{\\c&HB3EBFF&}}{word}{{\\c&HFFFFFF&}}"  # off-white/white
 
             # Create a new event for each word with highlighting
             new_line = pysubs2.SSAEvent(
