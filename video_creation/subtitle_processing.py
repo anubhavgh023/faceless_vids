@@ -41,18 +41,18 @@ def generate_subtitle_file(transcript_words, output_file):
 
             for i, word in enumerate(transcript_words):
                 current_line.append(word.word)
-                
+
                 if len(current_line) == 2 or i == len(transcript_words) - 1:
                     line_end = word.end
                     line_text = ' '.join(current_line)
-                    
+
                     start_time = format_time_with_default_milliseconds(line_start)
                     end_time = format_time_with_default_milliseconds(line_end)
-                    
+
                     srt_file.write(f"{subtitle_index}\n")
                     srt_file.write(f"{start_time} --> {end_time}\n")
                     srt_file.write(f"{line_text}\n\n")
-                    
+
                     subtitle_index += 1
                     current_line = []
                     if i < len(transcript_words) - 1:

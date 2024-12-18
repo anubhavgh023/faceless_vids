@@ -161,3 +161,7 @@ def generate_audio(
         error_msg = f"Error in generate_audio: {str(e)}"
         logger.error(error_msg)
         return False, error_msg
+
+if __name__=="__main__":
+    character="callum"
+    generate_audio(character)

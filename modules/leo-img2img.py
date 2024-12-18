@@ -7,17 +7,17 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-logger = logging.getLogger()
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+# logger = logging.getLogger()
+# logging.basicConfig(
+#     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+# )
 
 LEONARDO_API_KEY = os.getenv("LEONARDO_API_KEY")
 LEONARDO_GENERATE_API_URL = "https://cloud.leonardo.ai/api/rest/v1/generations"
 LEONARDO_FETCH_API_URL = "https://cloud.leonardo.ai/api/rest/v1/generations"
 
 MAX_RETRIES = 2  # Max number of retries for failed requests
-FETCH_MAX_ATTEMPTS = 5 # Max number of attempts for fetching images
+FETCH_MAX_ATTEMPTS = 5  # Max number of attempts for fetching images
 FETCH_DELAY = 10  # Delay between fetch attempts in seconds
 
 VALID_IMAGE_ASPECT_RATIOS = {
@@ -28,27 +28,25 @@ VALID_IMAGE_ASPECT_RATIOS = {
 
 PRESET_STYLES = {
     "anime": "ANIME",
-    "realistic": "CINEMATIC",
+    "realistic": "PHOTOGRAPHIC",
     "fantasy": "FANTASY_ART",
     "cyberpunk": "CYBERPUNK",
     "ink": "SKETCH",
     "watercolor": "WATERCOLOR",
-    "cartoon": "DYNAMMIC",
+    "cartoon": "CARTOON",
 }
 
 MODEL_IDS = {
     "anime": "e71a1c2f-4f80-4800-934f-2c68979d8cc8",  # Anime XL
-    "realistic":"aa77f04e-3eec-4034-9c07-d0f619684628", # Leonardo Kino XL
-    "fantasy": "d2fb9cf9-7999-4ae5-8bfe-f0df2d32abf8", # DreamShaper v5
-    "cartoon" : "d69c8273-6b17-4a30-a13e-d6637ae1c644" # 3D Animation Style
+    "realistic": "6bef9f1b-29a2-4ca3-8417-dad1b960bf38",  # PhotoReal V1
+    "fantasy": "eaa9a7c1-31d5-4de2-a3ec-e8a8842beb36",  # Fantasy World V1
     # Add more model IDs as needed
 }
 
-# cummultive
 # async def read_prompts(file_path: str):
 #     """
 #     Reads prompts from a file and returns an enhanced list of prompts
-#     with progressively accumulated context for image generation.
+#     with cumulative context for image generation.
 #     """
 #     try:
 #         with open(file_path, "r") as f:
@@ -57,8 +55,8 @@ MODEL_IDS = {
 #         # Create cumulative prompts
 #         cumulative_prompts = []
 #         for i in range(len(sentences)):
-#             # Accumulate sentences from the beginning up to the current index
-#             prompt = " ".join(sentences[: i + 1])
+#             # Combine current sentence with subsequent sentences
+#             prompt = " ".join(sentences[i : i + 2])
 #             cumulative_prompts.append(prompt)
 
 #         return cumulative_prompts
@@ -67,41 +65,21 @@ MODEL_IDS = {
 #         return []
 
 
-# cummulative prev+next
+# line-by-line
 async def read_prompts(file_path: str):
-    """
-    Reads prompts from a file and returns an enhanced list of prompts
-    with cumulative context for image generation.
-    """
+    """Reads prompts from a file and returns a list of prompts."""
     try:
         with open(file_path, "r") as f:
-            sentences = f.read().splitlines()
-
-        # Create cumulative prompts
-        cumulative_prompts = []
-        for i in range(len(sentences)):
-            # Combine current sentence with subsequent sentences
-            prompt = " ".join(sentences[i : i + 2])
-            cumulative_prompts.append(prompt)
-
-        return cumulative_prompts
+            return f.read().splitlines()
     except Exception as e:
         logger.error(f"Error reading prompts from {file_path}: {e}")
         return []
 
 
-# async def read_prompts(file_path: str):
-#     """Reads prompts from a file and returns a list of prompts."""
-#     try:
-#         with open(file_path, "r") as f:
-#             return f.read().splitlines()
-#     except Exception as e:
-#         logger.error(f"Error reading prompts from {file_path}: {e}")
-#         return []
-
-
-async def generate_image_request(session, prompt, style, i, aspect_ratio):
-    """Sends a single image generation request for the given prompt with retry logic."""
+async def generate_image_request(
+    session, prompt, style, i, aspect_ratio, prev_image_id=None
+):
+    """Sends a single image generation request with content progression guidance."""
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {LEONARDO_API_KEY}",
@@ -112,9 +90,9 @@ async def generate_image_request(session, prompt, style, i, aspect_ratio):
         "alchemy": True,
         "height": VALID_IMAGE_ASPECT_RATIOS[aspect_ratio]["height"],
         "width": VALID_IMAGE_ASPECT_RATIOS[aspect_ratio]["width"],
-        "modelId": MODEL_IDS.get(style, MODEL_IDS[style]),
+        "modelId": MODEL_IDS.get(style, MODEL_IDS["anime"]),
         "num_images": 1,
-        "presetStyle": PRESET_STYLES.get(style, PRESET_STYLES[style]),
+        "presetStyle": PRESET_STYLES.get(style, PRESET_STYLES["anime"]),
         "prompt": prompt,
         "highContrast": True,
         "highResolution": True,
@@ -122,6 +100,23 @@ async def generate_image_request(session, prompt, style, i, aspect_ratio):
         "promptMagic": True,
         "sd_version": "SDXL_LIGHTNING",
     }
+
+    # Add image progression guidance if a previous image exists
+    if prev_image_id:
+        payload.update(
+            {
+                "controlnets": [
+                    {
+                        "initImageId": prev_image_id,
+                        "initImageType": "GENERATED",
+                        "preprocessorId": 100,  # Content Reference ID
+                        "weight": 0.4,  # Moderate content influence
+                    }
+                ],
+                "init_generation_image_id": prev_image_id,
+                "init_strength": 0.3,  # Lower strength for more creative freedom
+            }
+        )
 
     for attempt in range(MAX_RETRIES):
         try:
@@ -183,6 +178,9 @@ async def fetch_and_save_image(session, generation_id, i):
                     image_url = response_data["generations_by_pk"]["generated_images"][
                         0
                     ]["url"]
+                    image_id = response_data["generations_by_pk"]["generated_images"][
+                        0
+                    ]["id"]
                     file_name = f"video_creation/assets/images/story_img_{i}.png"
                     os.makedirs(os.path.dirname(file_name), exist_ok=True)
 
@@ -191,7 +189,7 @@ async def fetch_and_save_image(session, generation_id, i):
                             with open(file_name, "wb") as f:
                                 f.write(await image_response.read())
                             logger.info(f"Image {i} saved as '{file_name}'")
-                            return
+                            return image_id
                         else:
                             logger.error(
                                 f"Failed to download Image {i}: Status code {image_response.status}"
@@ -206,39 +204,52 @@ async def fetch_and_save_image(session, generation_id, i):
             logger.error(f"Error fetching image {i}: {e}")
 
     logger.error(f"Failed to fetch image {i} after {FETCH_MAX_ATTEMPTS} attempts")
+    return None
 
 
 async def generate_images_from_prompts(prompts, style, aspect_ratio):
     """Generates images based on the provided prompts using the Leonardo AI API."""
     async with aiohttp.ClientSession() as session:
-        # Create tasks for all prompts at once
-        generate_tasks = [
-            generate_image_request(session, prompt, style, idx + 1, aspect_ratio)
-            for idx, prompt in enumerate(prompts)
-        ]
+        # Store image IDs to use for guidance
+        image_ids = []
 
-        # Wait for all generation tasks to complete
-        generation_ids = [
-            result for result in await asyncio.gather(*generate_tasks) if result
-        ]
-        
-        await asyncio.sleep(10)
-        # Create tasks to fetch all generated images
-        fetch_tasks = [
-            fetch_and_save_image(session, generation_id, idx)
-            for generation_id, idx in generation_ids
-        ]
+        # Create tasks for all prompts with image-to-image guidance
+        for idx, prompt in enumerate(prompts):
+            # Use the previous image's ID for guidance if available
+            prev_image_id = image_ids[-1] if image_ids else None
 
-        # Wait for all fetch tasks to complete
-        await asyncio.gather(*fetch_tasks)
+            # Generate image request task
+            generation_task = generate_image_request(
+                session, prompt, style, idx + 1, aspect_ratio, prev_image_id
+            )
+
+            # Wait for generation and get generation ID
+            generation_result = await generation_task
+
+            if generation_result:
+                generation_id, image_index = generation_result
+
+                # Wait a bit to ensure image is ready
+                await asyncio.sleep(10)
+
+                # Fetch and save image, getting its ID
+                image_id = await fetch_and_save_image(
+                    session, generation_id, image_index
+                )
+
+                if image_id:
+                    image_ids.append(image_id)
 
 
 if __name__ == "__main__":
+
     async def main():
-        file_path = "prompts/img_gen_prompts.txt"
+        file_path = "prompts/subtitle_gen_prompts.txt"
         prompts = await read_prompts(file_path)
         style = "anime"
         aspect_ratio = "9:16"
+
+        print(prompts)
 
         await generate_images_from_prompts(prompts, style, aspect_ratio)
 

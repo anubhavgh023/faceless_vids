@@ -29,7 +29,6 @@ def add_subtitles_with_audio(input_video, subtitle_file, audio_file, output_vide
     except subprocess.CalledProcessError as e:
         logger.error(f"Error adding subtitles to video '{input_video}': {e}")
 
-
 # Function to add background music
 def add_bg_music(final_video, bg_music_path, output_video):
     ffmpeg_command = (

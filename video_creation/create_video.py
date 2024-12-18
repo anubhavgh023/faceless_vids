@@ -8,26 +8,46 @@ from dotenv import load_dotenv
 from openai import OpenAI  # Corrected OpenAI import
 
 # Image processing
-from video_creation.image_processing import (
+# from video_creation.image_processing import (
+#     make_video_from_image,
+#     merge_videos,
+#     add_particle_effect,
+# )
+
+# # Audio processing
+# from video_creation.audio_processing import merge_audios
+
+# # Subtitle processing
+# from video_creation.subtitle_processing import (
+#     generate_subtitle_file,
+#     modify_subtitle_style,
+# )
+
+# # Video processing
+# from video_creation.video_processing import add_subtitles_with_audio, add_bg_music
+
+# ---- TESTING ---------#
+# Image processing
+from image_processing import (
     make_video_from_image,
     merge_videos,
     add_particle_effect,
 )
 
 # Audio processing
-from video_creation.audio_processing import merge_audios
+from audio_processing import merge_audios
 
 # Subtitle processing
-from video_creation.subtitle_processing import (
+from subtitle_processing import (
     generate_subtitle_file,
     modify_subtitle_style,
 )
 
 # Video processing
-from video_creation.video_processing import add_subtitles_with_audio, add_bg_music
-
+from video_processing import add_subtitles_with_audio, add_bg_music
 
 logger = logging.getLogger()
+
 
 # Function to log timing information
 def log_time_taken(function_name, start_time, end_time):
@@ -82,6 +102,9 @@ def generate_subtitles_from_audio():
 
 # Main function to create the video from images, audio, and subtitles.
 async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:str):
+
+# testing
+# def create_video(output_video_duration: int, bgm_audio: str, aspect_ratio: str):
     # Ensure directories exist
     os.makedirs(images_dir, exist_ok=True)
     os.makedirs(audio_dir, exist_ok=True)
@@ -105,7 +128,7 @@ async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:st
     start_time_parallel = time.time()
     with ProcessPoolExecutor(max_workers=multiprocessing.cpu_count()) as executor:
         video_futures = [
-            executor.submit(process_image_to_video, img, i,aspect_ratio)
+            executor.submit(process_image_to_video, img, i, aspect_ratio)
             for i, img in enumerate(images)
         ]
         # audio_future = executor.submit(process_audio, audios)
@@ -133,19 +156,21 @@ async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:st
     end_time_merge = time.time()
     log_time_taken("merge_videos", start_time_merge, end_time_merge)
 
+    #---------------------------
     # Step 4: Add particle effect (sequential)
-    start_time_particle = time.time()
-    pstyle = "test-rising-embers"
-    particle_video = os.path.join(particle_system_dir, f"{pstyle}.mp4")
-    particle_final_output_file = os.path.join(videos_dir, "particle_final_output.mp4")
-    add_particle_effect(
-        input_video=merged_video,
-        output_video_duration=output_video_duration,
-        particle_video=particle_video,
-        output_video=particle_final_output_file,
-    )
-    end_time_particle = time.time()
-    log_time_taken("add_particle_effect", start_time_particle, end_time_particle)
+    # start_time_particle = time.time()
+    # pstyle = "test-rising-embers"
+    # particle_video = os.path.join(particle_system_dir, f"{pstyle}.mp4")
+    # particle_final_output_file = os.path.join(videos_dir, "particle_final_output.mp4")
+    # add_particle_effect(
+    #     input_video=merged_video,
+    #     output_video_duration=output_video_duration,
+    #     particle_video=particle_video,
+    #     output_video=particle_final_output_file,
+    # )
+    # end_time_particle = time.time()
+    # log_time_taken("add_particle_effect", start_time_particle, end_time_particle)
+    #---------------------------
 
     # Step 5: Generate subtitle file using the Whisper transcription (sequential)
     start_time_subtitles = time.time()
@@ -169,7 +194,7 @@ async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:st
         videos_dir, "final_output_video_subtitles.mp4"
     )
     add_subtitles_with_audio(
-        particle_final_output_file,
+        merged_video,  # particle_final_output_file,
         modified_subtitle_file,
         combined_audio,
         final_video_with_subtitles,
@@ -184,7 +209,9 @@ async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:st
     if bgm_audio != "":
         start_time_bg_music = time.time()
         final_output_video = os.path.join(videos_dir, "final_output_video_bgm.mp4")
-        bg_music_path = os.path.join(bg_music_dir, f"{bgm_audio}.mp3")  # passing selected bgm audio
+        bg_music_path = os.path.join(
+            bg_music_dir, f"{bgm_audio}.mp3"
+        )  # passing selected bgm audio
         add_bg_music(final_video_with_subtitles, bg_music_path, final_output_video)
         end_time_bg_music = time.time()
         log_time_taken("add_bg_music", start_time_bg_music, end_time_bg_music)
@@ -194,4 +221,4 @@ async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:st
 
 # Entry point for running this script directly
 if __name__ == "__main__":
-    create_video()
+    asyncio.run(create_video(output_video_duration=45, bgm_audio="dark", aspect_ratio="9:16"))
