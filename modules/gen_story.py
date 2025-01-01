@@ -7,59 +7,85 @@ import concurrent.futures
 import asyncio
 import re
 import logging
+from config.logger import get_logger
 
 load_dotenv()
 
 client = OpenAI()
 client.api_key = os.getenv("OPENAI_API_KEY")
 
-logger = logging.getLogger()
+logger = get_logger(__name__)
 
-# Generate story-prompts which are going be used as subtitles
+# Generate Script : For generating scripts repeatedly
+async def generate_script(prompt: str, duration: int):
+    try:
+        # Define number of sentences based on duration
+        if duration == 45:
+            num_of_sentences = 7
+        elif duration == 60:
+            num_of_sentences = 11
+        elif duration == 75:
+            num_of_sentences = 14
+        else:
+            logger.info("Invalid duration")
+            return
 
-# ORIGINAL
-# ADD async in prod
-# async def subtitle_generator_story(prompt: str, duration: int):
-#     try:
-#         # Define number of sentences based on duration
-#         if duration == 45:
-#             num_of_sentences = 7
-#         elif duration == 60:
-#             num_of_sentences = 11
-#         elif duration == 75:
-#             num_of_sentences = 14
-#         else:
-#             logger.info("Invalid duration")
-#             return
+        # Function to request story generation
+        def request_story():
+            completion = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are a short storyteller."},
+                    {
+                        "role": "user",
+                        "content": (
+                            f"Write a cohesive and compelling story about '{prompt}'. "
+                            f"The story must have exactly {num_of_sentences} sentences. "
+                            f"Each sentence must be exactly 12 words long, no more, no less. "
+                            f"A sentence ends when there is a period (.). Use simple, expressive language, "
+                            f"punctuation (e.g., !, ?), and capitalization to add emotion. "
+                            f"Ensure no extra sentences and no incomplete ones—strictly {num_of_sentences}. "
+                            f"The story should flow naturally from beginning to end."
+                        ),
+                    },
+                ],
+            )
+            return completion.choices[0].message.content
 
-#         # Request a full story with the required number of sentences
-#         completion = client.chat.completions.create(
-#             model="gpt-4o-mini",
-#             messages=[
-#                 {"role": "system", "content": "You are a short storyteller."},
-#                 {
-#                     "role": "user",
-#                     "content": f"Write a compelling story in exactly {num_of_sentences} sentences about {prompt}, use simple words, each sentence should be of 12 words each, A sentence ends when there is a full stop(.) Ensure each sentence naturally follows the previous one, creating a cohesive short story. Add exclamation (!), capitalization <EXAMPLE>, (.) to make the sentence more expressive. Use punctuation marks",
-#                 },
-#             ],
-#         )
+        # Generate the story with a retry mechanism
+        max_retries = 4
+        retries = 0
 
-#         # Extract the full story content
-#         story = completion.choices[0].message.content
+        while retries < max_retries:
+            story = request_story()
 
-#         # Split the story into sentences
-#         sentences = story.split(". ")
+            # Split the story into sentences
+            sentences = story.split(". ")
+            sentences = [
+                s.strip() + "." for s in sentences if s.strip()
+            ]  # Clean and ensure full stops
 
-#         # Write each sentence on a new line in the file
-#         with open("prompts/subtitle_gen_prompts.txt", "w") as f:
-#             for sentence in sentences:
-#                 if sentence.strip():  # Skip empty sentences
-#                     f.write(sentence.strip() + ".\n")
+            if len(sentences) == num_of_sentences:
+                break  # Exit loop if sentence count is correct
 
-#         logger.info("Story successfully written to subtitle_gen_prompts.txt")
+            retries += 1
+            logger.info(
+                f"Retry {retries}/{max_retries}: Expected {num_of_sentences} sentences, "
+                f"but got {len(sentences)}. Retrying story generation..."
+            )
 
-#     except Exception as e:
-#         logger.error(f"Error: {e}")
+        if retries == max_retries:
+            logger.error(
+                "Max retries reached. Could not generate the story with the correct sentence count."
+            )
+            return
+
+        return sentences
+
+        logger.info("Story successfully written to subtitle_gen_prompts.txt")
+
+    except Exception as e:
+        logger.error(f"Error: {e}")
 
 
 async def subtitle_generator_story(prompt: str, duration: int):

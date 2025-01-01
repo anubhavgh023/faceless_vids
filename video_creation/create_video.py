@@ -6,54 +6,57 @@ import multiprocessing
 import logging
 from dotenv import load_dotenv
 from openai import OpenAI  # Corrected OpenAI import
+from config.logger import get_logger,log_time_taken
+
+logger = get_logger(__name__)
 
 # Image processing
-# from video_creation.image_processing import (
-#     make_video_from_image,
-#     merge_videos,
-#     add_particle_effect,
-# )
-
-# # Audio processing
-# from video_creation.audio_processing import merge_audios
-
-# # Subtitle processing
-# from video_creation.subtitle_processing import (
-#     generate_subtitle_file,
-#     modify_subtitle_style,
-# )
-
-# # Video processing
-# from video_creation.video_processing import add_subtitles_with_audio, add_bg_music
-
-# ---- TESTING ---------#
-# Image processing
-from image_processing import (
+from video_creation.image_processing import (
     make_video_from_image,
     merge_videos,
     add_particle_effect,
 )
 
 # Audio processing
-from audio_processing import merge_audios
+from video_creation.audio_processing import merge_audios
 
 # Subtitle processing
-from subtitle_processing import (
+from video_creation.subtitle_processing import (
     generate_subtitle_file,
     modify_subtitle_style,
 )
 
 # Video processing
-from video_processing import add_subtitles_with_audio, add_bg_music
+from video_creation.video_processing import add_subtitles_with_audio, add_bg_music
 
-logger = logging.getLogger()
+# ---- TESTING ---------#
+# Image processing
+# from image_processing import (
+#     make_video_from_image,
+#     merge_videos,
+#     add_particle_effect,
+# )
 
+# # Audio processing
+# from audio_processing import merge_audios
 
-# Function to log timing information
-def log_time_taken(function_name, start_time, end_time):
-    time_taken = end_time - start_time
-    log_message = f"{function_name}: {time_taken:.2f} seconds"
-    logger.info(log_message)
+# # Subtitle processing
+# from subtitle_processing import (
+#     generate_subtitle_file,
+#     modify_subtitle_style,
+# )
+
+# # Video processing
+# from video_processing import add_subtitles_with_audio, add_bg_music
+
+#----- LOGGER ---
+# logger = logging.getLogger()
+# # Function to log timing information
+# def log_time_taken(function_name, start_time, end_time):
+#     time_taken = end_time - start_time
+#     log_message = f"{function_name}: {time_taken:.2f} seconds"
+#     logger.info(log_message)
+#-----
 
 
 # Get the current script directory (create_video.py)

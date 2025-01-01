@@ -1,0 +1,631 @@
+2024-12-18 21:05:03,459 - routes.gen_script - ERROR - Error processing request: name 'JSONResponse' is not defined
+2024-12-18 21:05:30,015 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:05:30,021 - routes.gen_script - ERROR - Error processing request: name 'JSONResponse' is not defined
+2024-12-18 21:05:51,553 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:05:51,561 - modules.gen_story - INFO - Retry 1/4: Expected 7 sentences, but got 6. Retrying story generation...
+2024-12-18 21:05:53,920 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:05:53,924 - modules.gen_story - INFO - Retry 2/4: Expected 7 sentences, but got 5. Retrying story generation...
+2024-12-18 21:05:55,838 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:06:16,599 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:06:16,605 - modules.gen_story - INFO - Retry 1/4: Expected 11 sentences, but got 12. Retrying story generation...
+2024-12-18 21:06:22,276 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:06:22,278 - modules.gen_story - INFO - Retry 2/4: Expected 11 sentences, but got 10. Retrying story generation...
+2024-12-18 21:06:25,727 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:06:25,730 - modules.gen_story - INFO - Retry 3/4: Expected 11 sentences, but got 10. Retrying story generation...
+2024-12-18 21:06:29,777 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:06:29,780 - modules.gen_story - INFO - Retry 4/4: Expected 11 sentences, but got 10. Retrying story generation...
+2024-12-18 21:06:29,780 - modules.gen_story - ERROR - Max retries reached. Could not generate the story with the correct sentence count.
+2024-12-18 21:06:44,217 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:06:44,220 - modules.gen_story - INFO - Retry 1/4: Expected 11 sentences, but got 8. Retrying story generation...
+2024-12-18 21:06:50,941 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-12-18 21:34:32,897 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:33,435 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:33,785 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:34,136 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:34:35,020 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:34:35,371 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:35,722 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:36,073 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:36,424 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:36,775 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:37,126 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:37,478 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:37,829 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:38,181 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:38,532 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:38,883 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:39,235 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:39,586 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:39,937 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:40,289 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:40,641 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:40,993 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:41,344 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:41,696 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:42,048 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:42,399 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:42,751 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:43,102 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:43,454 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:43,806 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:44,157 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:44,509 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:44,861 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:45,212 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:45,564 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:45,915 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:46,267 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:46,619 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:46,971 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:47,323 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:47,674 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:48,026 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:48,378 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:48,729 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:49,081 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:49,432 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:49,783 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:50,134 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:50,486 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:50,837 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:51,189 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:51,541 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:51,893 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:52,244 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:52,596 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:52,947 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:53,298 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:53,649 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:54,001 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:34:54,553 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:54,903 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:55,254 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:55,605 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:55,957 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:34:56,308 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:56,659 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:57,010 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:57,362 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:57,713 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:58,064 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:34:58,577 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:58,928 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:59,279 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:59,630 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:34:59,981 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:35:00,333 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:00,685 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:01,036 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:01,389 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:01,740 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:02,092 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:02,444 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:02,796 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:03,148 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:03,500 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:03,852 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:04,203 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:04,555 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:04,907 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:05,258 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:05,609 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:05,961 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:06,312 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:06,663 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:35:07,231 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:07,582 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:07,933 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:08,284 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:08,635 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:35:08,987 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:09,338 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:09,689 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:10,040 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:10,391 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:10,743 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:11,094 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:35:11,570 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:11,921 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:12,272 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:12,623 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:12,974 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:35:13,325 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:13,677 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:14,028 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:14,379 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:14,731 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:15,082 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:15,434 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:15,785 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:16,137 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:16,488 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:16,840 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:17,191 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:17,543 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:17,894 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:18,246 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:18,597 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:18,948 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:19,299 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:19,651 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:20,002 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:20,353 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:20,704 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:21,056 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:21,408 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:21,760 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:22,112 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:22,464 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:22,815 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:23,167 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:23,519 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:23,871 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:24,222 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:24,574 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:24,925 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:25,277 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:35:25,628 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:27,817 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:28,369 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:28,720 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:37:29,078 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:29,429 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:29,780 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:37:30,582 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:37:30,933 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:31,284 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:31,635 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:31,986 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:32,338 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:32,689 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:33,040 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:33,391 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:33,742 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:34,093 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:34,444 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:34,796 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:35,147 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:35,498 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:35,849 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:36,200 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:36,552 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:36,903 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:37,254 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:37,606 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:37,957 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:38,308 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:37:38,831 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:39,182 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:37:40,645 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:37:40,995 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:41,346 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:41,697 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:42,048 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:42,399 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:42,750 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:43,101 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:43,452 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:43,803 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:44,155 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:44,506 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:44,857 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:45,209 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:45,560 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:45,911 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:46,262 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:46,614 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:46,965 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:47,316 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:47,668 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:48,019 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:48,370 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:48,722 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:49,073 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:49,424 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:49,775 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:50,126 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:50,477 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:50,828 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:51,179 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:51,530 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:51,882 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:52,233 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:52,584 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:52,936 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:53,287 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:53,639 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:53,990 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:54,341 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:54,692 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:37:55,046 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:55,397 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:55,748 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:56,098 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:37:56,888 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:37:57,239 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:57,590 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:57,941 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:58,291 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:58,642 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:37:58,995 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:59,346 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:37:59,697 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:00,048 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:00,399 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:38:00,750 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:38:01,104 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:01,455 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:01,856 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:38:02,916 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:38:03,267 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:03,617 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:38:04,596 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:38:04,947 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:38:06,271 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:38:06,622 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:06,973 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:07,324 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:07,674 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:08,026 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:08,377 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:08,728 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:09,079 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:09,430 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:09,781 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:10,132 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:10,484 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:10,835 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:11,187 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:11,538 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:11,889 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:12,240 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:12,592 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:12,943 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:13,294 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:13,646 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:13,997 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:14,348 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:14,699 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:15,050 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:15,401 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:15,753 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:16,104 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:16,455 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:16,806 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:17,157 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:17,509 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:17,860 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:18,211 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:18,563 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:18,914 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:19,265 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:19,617 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:19,968 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:20,319 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:20,671 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:21,022 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:21,374 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:38:21,727 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:22,079 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:22,430 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:38:23,691 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:38:24,042 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:24,393 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:24,744 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:25,095 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:25,446 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:25,798 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:26,149 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:26,500 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:26,852 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:27,203 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:27,554 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:27,906 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:28,257 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:28,608 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:28,960 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:29,311 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:29,662 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:30,013 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:30,365 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:30,716 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:31,067 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:31,418 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:31,770 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:32,122 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:32,473 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:32,825 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:33,177 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:33,528 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:33,880 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:34,231 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:38:34,583 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:22,779 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:23,305 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:23,656 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:24,007 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:24,358 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:24,709 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:40:25,060 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:25,411 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:40:25,886 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:26,237 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:26,588 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:26,938 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:27,289 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:40:27,641 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:27,993 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:28,344 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:28,696 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:29,047 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:29,398 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:29,750 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:30,101 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:30,452 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:30,803 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:31,154 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:31,505 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:31,857 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:32,208 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:32,560 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:32,911 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:33,263 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:40:33,822 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:34,173 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:34,524 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:34,875 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:35,227 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:40:35,579 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:35,930 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:36,282 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:36,634 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:36,985 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:37,336 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:40:37,688 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:06,820 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:07,391 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:07,742 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:08,093 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:08,444 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:08,795 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:46:09,146 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:09,498 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:46:09,986 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:10,337 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:10,688 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:11,039 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:11,391 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:11,742 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:12,094 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:12,445 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:12,797 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:13,149 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:13,501 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:13,852 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:14,204 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:14,555 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:14,907 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:15,259 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:15,610 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:15,961 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:16,313 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:16,664 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:17,016 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:17,367 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:17,719 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:18,071 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:18,422 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:18,774 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:46:19,128 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:19,479 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:46:19,836 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:20,187 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:20,538 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:20,889 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:21,241 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:46:21,592 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:21,944 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:22,296 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:22,647 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:22,998 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:23,349 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:23,701 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:24,052 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:24,403 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:24,755 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:25,106 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:46:25,659 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:26,010 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:26,361 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:46:27,201 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:46:27,552 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:27,903 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:28,254 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:28,605 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:28,956 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:29,308 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:29,660 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:30,011 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:30,362 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:30,714 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:31,066 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:31,418 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:31,769 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:32,120 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:32,471 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:32,823 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:33,174 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:33,525 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:33,876 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:34,227 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:34,579 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:34,930 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:35,281 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:35,633 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:35,984 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:36,335 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:36,687 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:37,038 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:37,389 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:37,741 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:38,092 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:38,443 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:38,794 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:39,146 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:46:39,645 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:39,996 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:40,347 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:40,698 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:41,050 - watchfiles.main - INFO - 4 changes detected
+2024-12-18 21:46:41,402 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:41,753 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:42,104 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:42,455 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:42,806 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:43,158 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:43,509 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:43,860 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:44,212 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:44,563 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:44,914 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:45,266 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:45,617 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:45,969 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:46,320 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:46,671 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:46:47,022 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:00,203 - watchfiles.main - INFO - 2 changes detected
+2024-12-18 21:47:00,556 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:00,907 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:01,259 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:01,610 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:01,961 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:02,313 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:02,664 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:03,016 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:03,368 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:03,719 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:04,071 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:04,423 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:04,775 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:05,126 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:05,478 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:05,829 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:06,181 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:06,533 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:06,885 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:07,237 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:07,588 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:07,940 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:08,292 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:08,644 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:08,995 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:09,347 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:09,698 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:10,050 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:10,401 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:10,753 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:11,104 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:11,456 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:11,807 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:12,159 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:12,511 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:12,863 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:47:13,214 - watchfiles.main - INFO - 1 change detected
+2024-12-18 21:49:09,476 - root - ERROR - Error in generate_audio: Decoding failed. ffmpeg returned error code: -2
+
+Output from ffmpeg/avlib:
+
+
+2024-12-18 21:49:09,477 - services.video_service - ERROR - Error in audio generation: Audio generation failed: Error in generate_audio: Decoding failed. ffmpeg returned error code: -2
+
+Output from ffmpeg/avlib:
+
+
+2024-12-18 21:49:11,010 - services.video_service - ERROR - Error in video generation: Audio generation failed: Error in generate_audio: Decoding failed. ffmpeg returned error code: -2
+
+Output from ffmpeg/avlib:
+
+Traceback (most recent call last):
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/video_service.py", line 51, in generate_video
+    (audio_success, audio_path, cloned_voice_id), _ = await asyncio.gather(
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/video_service.py", line 124, in process_voice
+    raise Exception(f"Audio generation failed: {result}")
+Exception: Audio generation failed: Error in generate_audio: Decoding failed. ffmpeg returned error code: -2
+
+Output from ffmpeg/avlib:
+
+
+2024-12-18 22:11:27,736 - routes.upload_vid_gen - ERROR - Error processing request: name 'get_audio_duration' is not defined
+2024-12-18 22:20:20,034 - root - ERROR - Error generating image for prompt 4: {'error': 'content moderation filter: nudged', 'path': '$', 'code': 'unexpected'}
+2024-12-18 22:20:20,034 - root - WARNING - Retrying prompt 4, attempt 2
+2024-12-18 22:20:20,035 - root - ERROR - Error generating image for prompt 3: {'error': 'content moderation filter: nudged', 'path': '$', 'code': 'unexpected'}
+2024-12-18 22:20:20,035 - root - WARNING - Retrying prompt 3, attempt 2
+2024-12-18 22:20:21,474 - root - ERROR - Error generating image for prompt 3: {'error': 'content moderation filter: nudged', 'path': '$', 'code': 'unexpected'}
+2024-12-18 22:20:21,495 - root - ERROR - Error generating image for prompt 4: {'error': 'content moderation filter: nudged', 'path': '$', 'code': 'unexpected'}
+2024-12-18 22:20:22,476 - root - ERROR - Failed to generate image for prompt 3 after 2 attempts
+2024-12-18 22:20:22,496 - root - ERROR - Failed to generate image for prompt 4 after 2 attempts
+2024-12-18 22:20:33,106 - root - WARNING - Image 5 not ready yet. Attempt 1/5
+2024-12-18 22:20:33,110 - root - WARNING - Image 7 not ready yet. Attempt 1/5
+2024-12-18 22:20:33,118 - root - WARNING - Image 2 not ready yet. Attempt 1/5
+2024-12-18 22:20:33,128 - root - WARNING - Image 6 not ready yet. Attempt 1/5
+2024-12-18 22:20:33,224 - root - WARNING - Image 1 not ready yet. Attempt 1/5
+2024-12-18 22:22:33,571 - root - WARNING - Image 1 not ready yet. Attempt 1/5
+2024-12-18 22:22:33,572 - root - WARNING - Image 4 not ready yet. Attempt 1/5
+2024-12-18 22:22:33,573 - root - WARNING - Image 7 not ready yet. Attempt 1/5
+2024-12-18 22:22:33,578 - root - WARNING - Image 5 not ready yet. Attempt 1/5
+2024-12-18 22:22:33,582 - root - WARNING - Image 2 not ready yet. Attempt 1/5
+2024-12-18 22:22:33,583 - root - WARNING - Image 6 not ready yet. Attempt 1/5
+2024-12-18 22:22:33,584 - root - WARNING - Image 3 not ready yet. Attempt 1/5
+2024-12-22 21:04:04,135 - routes.audio_to_vid - ERROR - Error processing request: name 'voice_character' is not defined
+2025-01-02 02:26:16,584 - services.aud2vid.aud_to_vid_service - ERROR - Error in video generation: name 'prompt' is not defined
+Traceback (most recent call last):
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_vid_service.py", line 46, in generate_aud2vid
+    await audio_to_story(prompt, duration)
+NameError: name 'prompt' is not defined
+2025-01-02 02:26:16,587 - routes.audio_to_vid - ERROR - Error processing request: name 'prompt' is not defined
+2025-01-02 02:28:15,421 - services.aud2vid.aud_to_vid_service - ERROR - Error in video generation: name 'log_time_taken' is not defined
+Traceback (most recent call last):
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_vid_service.py", line 46, in generate_aud2vid
+    await audio_to_story(audio_text, duration)
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_story.py", line 163, in audio_to_story
+    log_time_taken("Story content generation", start_time, time.time())
+NameError: name 'log_time_taken' is not defined
+2025-01-02 02:28:15,430 - routes.audio_to_vid - ERROR - Error processing request: name 'log_time_taken' is not defined
+2025-01-02 02:29:36,605 - services.aud2vid.aud_to_vid_service - ERROR - Error in video generation: name 'log_time_taken' is not defined
+Traceback (most recent call last):
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_vid_service.py", line 46, in generate_aud2vid
+    await audio_to_story(audio_text, duration)
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_story.py", line 163, in audio_to_story
+    log_time_taken("Story content generation", start_time, time.time())
+NameError: name 'log_time_taken' is not defined
+2025-01-02 02:29:36,613 - routes.audio_to_vid - ERROR - Error processing request: name 'log_time_taken' is not defined
+2025-01-02 02:31:01,752 - services.aud2vid.aud_to_vid_service - ERROR - Error in video generation: name 'log_time_taken' is not defined
+Traceback (most recent call last):
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_vid_service.py", line 46, in generate_aud2vid
+    await audio_to_story(audio_text, duration)
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_story.py", line 163, in audio_to_story
+    log_time_taken("Story content generation", start_time, time.time())
+NameError: name 'log_time_taken' is not defined
+2025-01-02 02:31:01,760 - routes.audio_to_vid - ERROR - Error processing request: name 'log_time_taken' is not defined
+2025-01-02 02:32:04,385 - services.aud2vid.aud_to_vid_service - ERROR - Error in video generation: name 'log_time_taken' is not defined
+Traceback (most recent call last):
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_vid_service.py", line 46, in generate_aud2vid
+    await audio_to_story(audio_text, duration)
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_story.py", line 163, in audio_to_story
+    log_time_taken("Story content generation", start_time, time.time())
+NameError: name 'log_time_taken' is not defined
+2025-01-02 02:32:04,392 - routes.audio_to_vid - ERROR - Error processing request: name 'log_time_taken' is not defined
+2025-01-02 02:34:23,595 - services.aud2vid.aud_to_vid_service - ERROR - Error in video generation: name 'voice_character' is not defined
+Traceback (most recent call last):
+  File "/home/anubhav/Development/videoAI/faceless_vids/services/aud2vid/aud_to_vid_service.py", line 49, in generate_aud2vid
+    audio_task = process_voice(voice_character, voice_files)
+NameError: name 'voice_character' is not defined
+2025-01-02 02:34:23,603 - routes.audio_to_vid - ERROR - Error processing request: name 'voice_character' is not defined
+2025-01-02 02:36:10,098 - root - WARNING - Image 1 not ready yet. Attempt 1/5
+2025-01-02 02:36:10,113 - root - WARNING - Image 5 not ready yet. Attempt 1/5
+2025-01-02 02:36:10,129 - root - WARNING - Image 6 not ready yet. Attempt 1/5
+2025-01-02 02:36:10,168 - root - WARNING - Image 4 not ready yet. Attempt 1/5
+2025-01-02 02:36:10,201 - root - WARNING - Image 2 not ready yet. Attempt 1/5
+2025-01-02 02:36:10,242 - root - WARNING - Image 3 not ready yet. Attempt 1/5
+2025-01-02 02:36:10,749 - root - WARNING - Image 7 not ready yet. Attempt 1/5

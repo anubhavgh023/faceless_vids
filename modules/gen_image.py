@@ -34,13 +34,15 @@ PRESET_STYLES = {
     "ink": "SKETCH",
     "watercolor": "WATERCOLOR",
     "cartoon": "DYNAMMIC",
+    "cinematic":"DYNAMMIC"
 }
 
 MODEL_IDS = {
     "anime": "e71a1c2f-4f80-4800-934f-2c68979d8cc8",  # Anime XL
-    "realistic":"aa77f04e-3eec-4034-9c07-d0f619684628", # Leonardo Kino XL
-    "fantasy": "d2fb9cf9-7999-4ae5-8bfe-f0df2d32abf8", # DreamShaper v5
-    "cartoon" : "d69c8273-6b17-4a30-a13e-d6637ae1c644" # 3D Animation Style
+    "realistic": "aa77f04e-3eec-4034-9c07-d0f619684628",  # Leonardo Kino XL
+    "fantasy": "d2fb9cf9-7999-4ae5-8bfe-f0df2d32abf8",  # DreamShaper v5
+    "cinematic": "2067ae52-33fd-4a82-bb92-c2c55e7d2786",
+    # "cartoon" : "d69c8273-6b17-4a30-a13e-d6637ae1c644" # 3D Animation Style #not working
     # Add more model IDs as needed
 }
 
@@ -114,7 +116,7 @@ async def generate_image_request(session, prompt, style, i, aspect_ratio):
         "width": VALID_IMAGE_ASPECT_RATIOS[aspect_ratio]["width"],
         "modelId": MODEL_IDS.get(style, MODEL_IDS[style]),
         "num_images": 1,
-        "presetStyle": PRESET_STYLES.get(style, PRESET_STYLES[style]),
+        # "presetStyle": PRESET_STYLES.get(style, PRESET_STYLES[style]),
         "prompt": prompt,
         "highContrast": True,
         "highResolution": True,
@@ -237,7 +239,7 @@ if __name__ == "__main__":
     async def main():
         file_path = "prompts/img_gen_prompts.txt"
         prompts = await read_prompts(file_path)
-        style = "anime"
+        style = "cinematic"
         aspect_ratio = "9:16"
 
         await generate_images_from_prompts(prompts, style, aspect_ratio)
