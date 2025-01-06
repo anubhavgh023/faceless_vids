@@ -33,7 +33,7 @@ async def generate_aud2vid(
     duration: int,
     aspect_ratio: str,
     style: str,
-    bgm_audio: str,
+    bgm_audio: str = "",
     voice_character: str = "callum",
     voice_files: Optional[List[str]] = None,
 ):

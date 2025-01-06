@@ -40,13 +40,17 @@ from pydantic import BaseModel, Field
 @router.post("/audio-to-video")
 async def handle_aud2vid_request(
     #prompt: str = Form(...),
-    duration: int = Form(...),
+    # duration: int = Form(...),
     aspect_ratio: str = Form(...),
     style: str = Form(...),
     #voice_character: Optional[str] = Form(""),
     bgm_audio: Optional[str] = Form(""),
     voice_files: Optional[List[UploadFile]] = File(...),  # Explicitly make it optional
 ):
+
+
+    duration = 45
+    style = "anime"
     print(duration)
     print(aspect_ratio)
     print(bgm_audio)

@@ -629,3 +629,31 @@ NameError: name 'voice_character' is not defined
 2025-01-02 02:36:10,201 - root - WARNING - Image 2 not ready yet. Attempt 1/5
 2025-01-02 02:36:10,242 - root - WARNING - Image 3 not ready yet. Attempt 1/5
 2025-01-02 02:36:10,749 - root - WARNING - Image 7 not ready yet. Attempt 1/5
+2025-01-02 21:21:22,794 - root - ERROR - Error generating image for prompt 1: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:22,800 - root - WARNING - Retrying prompt 1, attempt 2
+2025-01-02 21:21:22,801 - root - ERROR - Error generating image for prompt 7: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:22,801 - root - WARNING - Retrying prompt 7, attempt 2
+2025-01-02 21:21:22,802 - root - ERROR - Error generating image for prompt 6: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:22,802 - root - WARNING - Retrying prompt 6, attempt 2
+2025-01-02 21:21:22,802 - root - ERROR - Error generating image for prompt 3: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:22,803 - root - WARNING - Retrying prompt 3, attempt 2
+2025-01-02 21:21:22,803 - root - ERROR - Error generating image for prompt 4: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:22,803 - root - WARNING - Retrying prompt 4, attempt 2
+2025-01-02 21:21:22,854 - root - ERROR - Error generating image for prompt 2: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:22,855 - root - WARNING - Retrying prompt 2, attempt 2
+2025-01-02 21:21:22,929 - root - ERROR - Error generating image for prompt 5: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:22,931 - root - WARNING - Retrying prompt 5, attempt 2
+2025-01-02 21:21:24,145 - root - ERROR - Error generating image for prompt 6: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:24,146 - root - ERROR - Error generating image for prompt 4: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:24,147 - root - ERROR - Error generating image for prompt 1: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:24,158 - root - ERROR - Error generating image for prompt 3: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:24,186 - root - ERROR - Error generating image for prompt 2: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:24,271 - root - ERROR - Error generating image for prompt 5: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:24,320 - root - ERROR - Error generating image for prompt 7: {'error': 'not enough api tokens userId: aaa29bd3-03a9-4214-ac81-0573496d1bc6', 'path': '$', 'code': 'unexpected'}
+2025-01-02 21:21:25,146 - root - ERROR - Failed to generate image for prompt 6 after 2 attempts
+2025-01-02 21:21:25,147 - root - ERROR - Failed to generate image for prompt 4 after 2 attempts
+2025-01-02 21:21:25,147 - root - ERROR - Failed to generate image for prompt 1 after 2 attempts
+2025-01-02 21:21:25,159 - root - ERROR - Failed to generate image for prompt 3 after 2 attempts
+2025-01-02 21:21:25,187 - root - ERROR - Failed to generate image for prompt 2 after 2 attempts
+2025-01-02 21:21:25,272 - root - ERROR - Failed to generate image for prompt 5 after 2 attempts
+2025-01-02 21:21:25,323 - root - ERROR - Failed to generate image for prompt 7 after 2 attempts
