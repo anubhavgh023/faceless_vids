@@ -1,19 +1,18 @@
 # Fastapi imports
 from fastapi import APIRouter
-from fastapi import FastAPI, UploadFile, File, HTTPException, Form
+from fastapi import UploadFile, File, HTTPException, Form
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
-from typing import List, Annotated, Optional
-from pydub import AudioSegment
+from typing import List, Optional
 from pathlib import Path
-from pydantic import BaseModel
 
 # Helpers
-from modules.gen_audio import DEFAULT_VOICES
 from config.logger import get_logger 
 from services.aud2vid.aud_to_vid_service import generate_aud2vid 
 from helpers.audio_duration import get_audio_duration
 from modules.speech2text import speech2text
+
+from typing import Optional, List
+from fastapi import Form, File, UploadFile, HTTPException
 
 logger = get_logger(__name__)
 
@@ -32,14 +31,9 @@ VALID_STYLES = {
 MAX_VOICE_FILE_DURATION = 120  # seconds
 VALID_ASPECT_RATIOS = {"9:16", "16:9", "1:1"}
 
-from typing import Optional, List
-from fastapi import Form, File, UploadFile, HTTPException
-from pydantic import BaseModel, Field
-
 
 @router.post("/audio-to-video")
 async def handle_aud2vid_request(
-    #prompt: str = Form(...),
     # duration: int = Form(...),
     aspect_ratio: str = Form(...),
     style: str = Form(...),

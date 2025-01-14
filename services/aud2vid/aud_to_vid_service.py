@@ -1,9 +1,6 @@
 import asyncio
-import logging
 import time
-from pathlib import Path
 from typing import Optional, List, Tuple
-import os
 
 from modules.gen_story import subtitle_generator_story, image_generator_story
 from modules.gen_audio import (
@@ -19,9 +16,7 @@ from helpers.clean_video_folder import clean_video_folder
 
 from config.logger import get_logger 
 
-
 logger = get_logger(__name__)
-
 
 from services.image_service import generate_images
 from services.story_service import generate_story_content
@@ -33,7 +28,7 @@ async def generate_aud2vid(
     duration: int,
     aspect_ratio: str,
     style: str,
-    bgm_audio: str = "",
+    bgm_audio,
     voice_character: str = "callum",
     voice_files: Optional[List[str]] = None,
 ):
@@ -42,7 +37,7 @@ async def generate_aud2vid(
     cloned_voice_id = None
 
     try:
-        # 1. Generate story content
+        # 1. Generate story content from audio
         await audio_to_story(audio_text, duration)
 
         # 2. Generate audio and images concurrently

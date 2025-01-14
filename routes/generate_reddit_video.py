@@ -33,9 +33,9 @@ MAX_VOICE_FILE_DURATION = 120  # seconds
 VALID_ASPECT_RATIOS = {"9:16", "16:9", "1:1"}
 
 
-@router.post("/generate-reddit-video")
+@router.post("/gen-reddit-video")
 async def handle_video_request(
-    prompt: str,
+    url: str,
     duration: int,
     aspect_ratio: str,
     style: str,
@@ -65,6 +65,8 @@ async def handle_video_request(
             status_code=400,
             detail=f"Invalid voice. Allowed voices are {DEFAULT_VOICES.keys()}.",
         )
+
+    # Extract Reddit text, feed it as prompt
 
     try:
         # Generate video
