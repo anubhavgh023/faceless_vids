@@ -33,7 +33,7 @@ def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio):
         video_duration = 7  # 7 seconds each video
         zoom_speed = 0.003  # Slow zoom speed
         max_zoom = 1.5
-        zoom_area_list = ["top-left", "top-right", "bottom-right"]
+        zoom_area_list = ["top-left", "top-right", "center"]
         zoom_area = random.choice(zoom_area_list)
 
         # Determine the x, y coordinates for the zoom area
@@ -52,15 +52,15 @@ def make_video_from_image(image: str, i: int, output_video: str, aspect_ratio):
         else:
             raise ValueError("Invalid zoom area specified")
 
-        # Apply alternate shaky effect
-        if i % 2 == 0:
-            filter_complex = (
-                f"rotate='cos(t*4)*PI/100 + cos(t*3)*PI/100':c=black,"
-                f"scale={width}:{height},crop={width}:{height}:0:0,"
-                f"pad={width}:{height}:(ow-iw)/3:(oh-ih)/3"
-            )
-        else:
-            filter_complex = (
+        # # Apply alternate shaky effect
+        # if i % 2 == 0:
+        #     filter_complex = (
+        #         f"rotate='cos(t*4)*PI/100 + cos(t*3)*PI/100':c=black,"
+        #         f"scale={width}:{height},crop={width}:{height}:0:0,"
+        #         f"pad={width}:{height}:(ow-iw)/3:(oh-ih)/3"
+        #     )
+        # else:
+        filter_complex = (
                 f"zoompan=z='min(max(zoom,pzoom)+{zoom_speed},{max_zoom})':d={video_duration*25}:"
                 f"x='{x}':y='{y}':s={width}x{height}:fps=25,"
                 f"scale={width}:{height}"

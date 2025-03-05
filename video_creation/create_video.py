@@ -22,8 +22,7 @@ from video_creation.audio_processing import merge_audios
 
 # Subtitle processing
 from video_creation.subtitle_processing import (
-    generate_subtitle_file,
-    modify_subtitle_style,
+    add_subtitle_with_audio
 )
 
 # Video processing
@@ -175,37 +174,52 @@ async def create_video(output_video_duration: int,bgm_audio: str,aspect_ratio:st
     # log_time_taken("add_particle_effect", start_time_particle, end_time_particle)
     #---------------------------
 
-    # Step 5: Generate subtitle file using the Whisper transcription (sequential)
-    start_time_subtitles = time.time()
-    subtitle_file = os.path.join(subtitles_dir, "story_subtitles.srt")
-    generate_subtitle_file(transcript.words, subtitle_file)
-    end_time_subtitles = time.time()
-    log_time_taken("generate_subtitle_file", start_time_subtitles, end_time_subtitles)
+    #-----
+    # # Step 5: Generate subtitle file using the Whisper transcription (sequential)
+    # start_time_subtitles = time.time()
+    # subtitle_file = os.path.join(subtitles_dir, "story_subtitles.srt")
+    # generate_subtitle_file(transcript.words, subtitle_file)
+    # end_time_subtitles = time.time()
+    # log_time_taken("generate_subtitle_file", start_time_subtitles, end_time_subtitles)
 
-    # Step 6: Modify the subtitle style (sequential)
-    start_time_modify_subtitle = time.time()
-    modified_subtitle_file = os.path.join(subtitles_dir, "story_subtitles.ass")
-    modify_subtitle_style(subtitle_file, modified_subtitle_file)
-    end_time_modify_subtitle = time.time()
-    log_time_taken(
-        "modify_subtitle_style", start_time_modify_subtitle, end_time_modify_subtitle
-    )
+    # # Step 6: Modify the subtitle style (sequential)
+    # start_time_modify_subtitle = time.time()
+    # modified_subtitle_file = os.path.join(subtitles_dir, "story_subtitles.ass")
+    # modify_subtitle_style(subtitle_file, modified_subtitle_file)
+    # end_time_modify_subtitle = time.time()
+    # log_time_taken(
+    #     "modify_subtitle_style", start_time_modify_subtitle, end_time_modify_subtitle
+    # )
 
-    # Step 7: Add subtitles with audio to the video (sequential)
-    start_time_final_video = time.time()
+    # # Step 7: Add subtitles with audio to the video (sequential)
+    # start_time_final_video = time.time()
+    # final_video_with_subtitles = os.path.join(
+    #     videos_dir, "final_output_video_subtitles.mp4"
+    # )
+    # add_subtitles_with_audio(
+    #     merged_video,  # particle_final_output_file,
+    #     modified_subtitle_file,
+    #     combined_audio,
+    #     final_video_with_subtitles,
+    # )
+    # end_time_final_video = time.time()
+    # log_time_taken(
+    #     "add_subtitles_with_audio", start_time_final_video, end_time_final_video
+    # )
+    #-------------
+
+    ##
+    # Step:
     final_video_with_subtitles = os.path.join(
         videos_dir, "final_output_video_subtitles.mp4"
     )
-    add_subtitles_with_audio(
-        merged_video,  # particle_final_output_file,
-        modified_subtitle_file,
+    add_subtitle_with_audio(
+        merged_video,
         combined_audio,
-        final_video_with_subtitles,
+        transcript,
+        final_video_with_subtitles
     )
-    end_time_final_video = time.time()
-    log_time_taken(
-        "add_subtitles_with_audio", start_time_final_video, end_time_final_video
-    )
+    
 
     # If there is no bgm_audio selected, don't do this step.
     # Step 8: Add background music to the final video (sequential)

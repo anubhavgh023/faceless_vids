@@ -21,7 +21,7 @@ def setup_logging():
 
     # Configure the root logger
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.WARN,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers=[
             # File handler with log rotation

@@ -78,7 +78,7 @@ async def generate_script(style: str, duration: int, topic: str):
                         "role": "user",
                         "content": (
                             f"{style_prompt} Topic: '{topic}'. The story must have exactly {num_of_sentences} sentences. "
-                            f"Each sentence should be approximately 10-12 words long. "
+                            f"Each sentence should be approximately 13 words long. "
                             f"A sentence ends when there is a period (.). Use simple, expressive language, "
                             f"punctuation (e.g., !, ?), and capitalization to add emotion. "
                             f"Ensure no extra sentences and no incomplete ones—strictly {num_of_sentences}. "
@@ -131,8 +131,6 @@ def main():
     #     print("\nGenerated Story:\n")
     #     for sentence in result:
     #         print(sentence)
-
-    print(result)
 
 
 if __name__ == "__main__":
