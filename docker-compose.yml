@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: faceless-vid-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./video_creation/assets/videos:/app/video_creation/assets/videos  
+
+    environment:
+      - PYTHONUNBUFFERED=1
