@@ -2,16 +2,8 @@
 venv/
 
 *.mp4
-*.txt
-*.mp3
-*.srt
-*.ass
-*.otf
-*.ttf
-*.png
 
 __pycache__
 transforms.trf
 
 prompts/prompts.txt
-*.txt

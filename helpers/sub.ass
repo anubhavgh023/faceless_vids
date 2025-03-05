@@ -1,0 +1,21 @@
+[Script Info]
+Title: Word Highlight
+ScriptType: v4.00+
+Collisions: Normal
+PlayDepth: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,24,&HFFFFFF&,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,1,0,2,10,10,10,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.60,0.0:0.0:3.0.30.0,Default,,0,0,0,,{\c&HFFFF00&}This{\c&HFFFFFF&}
+Dialogue: 0,0.0:0.0:3.0.30.0,0.0:0.0:6.0.0.0,Default,,0,0,0,,{\c&HFFFF00&}was{\c&HFFFFFF&}
+Dialogue: 0,0:00:06.00,0.0:0.0:4.0.20.0,Default,,0,0,0,,{\c&HFFFF00&}the{\c&HFFFFFF&}
+Dialogue: 0,0.0:0.0:4.0.20.0,0.0:0.0:2.0.40.0,Default,,0,0,0,,{\c&HFFFF00&}rhythmic{\c&HFFFFFF&}
+Dialogue: 0,0:00:02.40,0.0:0.0:3.0.10.0,Default,,0,0,0,,{\c&HFFFF00&}lullabies{\c&HFFFFFF&}
+Dialogue: 0,0.0:0.0:3.0.10.0,0.0:0.0:3.0.80.0,Default,,0,0,0,,{\c&HFFFF00&}of{\c&HFFFFFF&}
+Dialogue: 0,0:00:03.80,0.0:0.0:5.0.40.0,Default,,0,0,0,,{\c&HFFFF00&}Summer{\c&HFFFFFF&}
+Dialogue: 0,0.0:0.0:5.0.40.0,0.0:0.0:7.0.0.0,Default,,0,0,0,,{\c&HFFFF00&}Downpour's{\c&HFFFFFF&}
+Dialogue: 0,0:00:07.00,0.0:0.0:10.0.20.0,Default,,0,0,0,,{\c&HFFFF00&}rain{\c&HFFFFFF&}
