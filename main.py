@@ -28,7 +28,8 @@ from routes import (
     generate_video,
     gen_script,
     upload_vid_gen,
-    audio_to_vid
+    audio_to_vid,
+   generate_reddit_video 
 )
 
 app.include_router(health_check.router, prefix="")
@@ -36,3 +37,4 @@ app.include_router(generate_video.router,prefix="")
 app.include_router(gen_script.router,prefix="")
 app.include_router(upload_vid_gen.router,prefix="")
 app.include_router(audio_to_vid.router,prefix="")
+app.include_router(generate_reddit_video.router,prefix="")
