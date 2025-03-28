@@ -7,7 +7,7 @@ HEADERS = {
 }
 
 
-def fetch_post_data(url,num_of_comments):
+def extract_reddit_url_data(url,num_of_comments):
     """Scrapes a Reddit post from old.reddit.com and extracts its content and top 2 comments (text only)."""
 
     # Convert 'www.reddit.com' to 'old.reddit.com'
@@ -71,7 +71,9 @@ def fetch_post_data(url,num_of_comments):
 
 
 # Example usage:
-reddit_link = "https://www.reddit.com/r/golang/comments/1hv9apb/what_are_the_reasons_for_not_picking_go_templates/"
-data = fetch_post_data(reddit_link,3)
+if __name__ == "__main__":
+    reddit_link = "https://www.reddit.com/r/golang/comments/1hv9apb/what_are_the_reasons_for_not_picking_go_templates/"
+    data = extract_reddit_url_data(reddit_link,3)
 
-print(data)
+    print(data)
+    

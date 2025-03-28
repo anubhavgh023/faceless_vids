@@ -14,6 +14,7 @@ from modules.gen_audio import DEFAULT_VOICES
 from config.logger import get_logger, log_time_taken
 
 from services.video_service import generate_video
+from modules.reddit_extracted import extract_reddit_url_data
 
 logger = get_logger(__name__)
 
@@ -35,6 +36,7 @@ VALID_ASPECT_RATIOS = {"9:16", "16:9", "1:1"}
 
 @router.post("/gen-reddit-video")
 async def handle_video_request(
+    userID: str,
     url: str,
     duration: int,
     aspect_ratio: str,
@@ -67,11 +69,13 @@ async def handle_video_request(
         )
 
     # Extract Reddit text, feed it as prompt
+    prompt = extract_reddit_url_data(url)
+    content = prompt["content"]
 
     try:
         # Generate video
         await generate_video(
-            prompt=prompt,
+            prompt=content,
             duration=int(duration),
             style=style,
             aspect_ratio=aspect_ratio,

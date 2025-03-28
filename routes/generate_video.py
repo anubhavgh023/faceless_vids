@@ -11,7 +11,7 @@ from typing import Annotated
 
 from modules.gen_audio import DEFAULT_VOICES
 
-from config.logger import get_logger,log_time_taken
+from config.logger import get_logger, log_time_taken
 
 from services.video_service import generate_video
 
@@ -32,8 +32,10 @@ VALID_STYLES = {
 MAX_VOICE_FILE_DURATION = 120  # seconds
 VALID_ASPECT_RATIOS = {"9:16", "16:9", "1:1"}
 
+
 @router.post("/generate-video")
 async def handle_video_request(
+    userID: str,
     prompt: str,
     duration: int,
     aspect_ratio: str,

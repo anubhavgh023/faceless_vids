@@ -35,6 +35,7 @@ VALID_ASPECT_RATIOS = {"9:16", "16:9", "1:1"}
 @router.post("/audio-to-video")
 async def handle_aud2vid_request(
     # duration: int = Form(...),
+    userID: str = Form(...),
     aspect_ratio: str = Form(...),
     style: str = Form(...),
     #voice_character: Optional[str] = Form(""),
@@ -45,6 +46,7 @@ async def handle_aud2vid_request(
 
     duration = 45
     style = "anime"
+    print(userID)
     print(duration)
     print(aspect_ratio)
     print(bgm_audio)
