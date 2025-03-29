@@ -2,6 +2,8 @@
 venv/
 
 *.mp4
+*.png
+*.wav
 
 __pycache__
 transforms.trf

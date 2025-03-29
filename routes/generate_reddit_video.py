@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from typing import Annotated
 
 from modules.gen_audio import DEFAULT_VOICES
+from helpers.aws_uploader import upload_to_s3
 
 from config.logger import get_logger, log_time_taken
 
@@ -83,7 +84,32 @@ async def handle_video_request(
             voice_character=voice_character,
         )
 
-        return JSONResponse({"success": True, "video_path": "s3_url"})  # aws s3 link
+
+        # Determine the correct video path based on bgm_audio
+        video_path = Path("video_creation/assets/videos")
+
+        if bgm_audio != "":
+            video_file = video_path / "final_output_video_bgm.mp4"
+            print("VIDEO FILE:",video_file)
+        else:
+            video_file = (
+                video_path / "final_output_video.mp4"
+            )  
+
+        # Verify the video file exists before uploading
+        if not video_file.exists():
+            raise HTTPException(
+                status_code=500, detail="Generated video file not found"
+            )
+
+        # Upload to aws-S3 with duration
+        s3_url = upload_to_s3(str(video_file), int(duration))
+
+        return JSONResponse(
+            {"success": True, 
+             "video_path": s3_url, 
+             "duration": duration}
+        )
 
     except Exception as e:
         logger.error(f"Error processing request: {str(e)}")
